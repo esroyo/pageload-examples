@@ -4,16 +4,26 @@
   <meta charset="utf-8">
   <title>Pageload examples</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./assets/new.css">
 </head>
 <body>
   <header>
-    <h1>Understanding page load</h1>
+    <h1>🌍&nbsp; Page load facts</h1>
   </header>
 
-  <article>
-    <h3>Loading a web site is a gradual process</h3>
+  <details id="toc">
+    <summary>Table of contents</summary>
+    <ul>
+      <li><a href="#example1">Loading a web site is a gradual process</a></li>
+      <ul>
+  </details>  
 
-    <figure class="quote">
+  <hr>
+
+  <article id="example1">
+    <h2>📝 Loading a web site is a gradual process</h2>
+
+    <figure>
       <blockquote>
         It's important to understand that [...] is a gradual process. For better user experience, the rendering engine will try to display contents on the screen as soon as possible. It will not wait until all HTML is parsed before starting to build and layout the render tree. Parts of the content will be parsed and displayed, while the process continues with the rest of the contents that keeps coming from the network.
       </blockquote>
@@ -22,10 +32,20 @@
       </figcaption>
     </figure>
 
-    <p>Check it out with a page that has lots of content and takes long to be downloaded. Try to scroll down while the page is being downloaded. The display keeps updating, but <code>DOMContentLoaded</code> and <code>load</code> events won't be triggered until the download and parsing of the HTML is finished. There is no direct correlation between the delay on those events and a bad score on metrics like FCP, LCP, CLS or TBT.</p>
+    <p>Let's demonstrate that fact by loading a page with lots of text content. Page download is throttled by the server and takes a long time.</p>
+    <p>Try to scroll down while the page is being downloaded.</p>
+    <p>The display keeps updating, but <code>DOMContentLoaded</code> and <code>load</code> events won't trigger until the download and parsing of the HTML is <em>completed</em>.</p>
+    <p>There is no <em>direct</em> correlation between the delay on those events and a poor core web vitals score. Although the page is loading, LCP will happen soon enough. This doesn't mean the "performance" of the page is good.</p>
 
-    <p><ul><li><a href="https://proxy-throttle.deno.dev/?factor=5&url=https://esroyo.github.io/pageload-examples/examples/generic/" target="_blank">Example page</a></li></ul></p>
+    <p>
+    <a href="https://proxy-throttle.deno.dev/?factor=5&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fgeneric%2F" target="_blank"><button>Open example page</button></a>
+    <a href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fproxy-throttle.deno.dev%2F%3Ffactor%3D1%26url%3Dhttps%253A%252F%252Fesroyo.github.io%252Fpageload-examples%252Fexamples%252Fgeneric%252F" target="_blank"><button>Test on PageSpeed</button></a>
+    </p>
+
+    <p>[<a href="#toc">TOP</a>]</p>
   </article>
+
+  <hr>
 
 </body>
 </html>
