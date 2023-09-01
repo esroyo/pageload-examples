@@ -4,50 +4,16 @@
   <meta charset="utf-8">
   <title>Pageload examples</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- <link href="https://proxy-throttle.deno.dev/?factor=0.3&url=https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="https://proxy-throttle.deno.dev?factor=10&url=https://esroyo.github.io/pageload-examples/assets/new.css">
 </head>
 <body>
-  <!-- the sequence should be like this:
-  [10] initial readyState:loading
-  [20] readyState:interactive
-  [21] DOMContentLoaded
-  [30] iframe onload
-  [40] img onload
-  [40] readyState:complete
-  [40] window onload
-  -->
-
-  <script>
-    async function perfObserver(list, observer) {
-      list.getEntries().forEach((entry) => {
-        const li = document.createElement('li');
-        li.textContent = `[${entry.startTime}] ${entry.name}`;
-        results.append(li);
-      });
-    }
-    const observer = new PerformanceObserver(perfObserver);
-    observer.observe({ entryTypes: ["mark"] });
-
-    performance.mark('initial readyState:' + document.readyState);
-
-    document.addEventListener('readystatechange', () => performance.mark('readyState:' + document.readyState));
-    document.addEventListener('DOMContentLoaded', () => performance.mark('DOMContentLoaded'));
-
-    window.onload = () => performance.mark('window onload');
-  </script>
-
-  <details open>
-    <summary><strong>Sequence of events</strong></summary>
-    <ul id="results"></ul>
-  </details>
-
-  <hr>
-
-  <h1>Page load &mdash; Example 1</h1>
+  <header>
+    <h1>🌍&nbsp; Page loading</h1>
+  </header>
 
   <article>
 
-    <img src="https://proxy-throttle.deno.dev/?factor=2&url=https://esroyo.github.io/pageload-examples/assets/www-letshare.png" id="img" width="536" height="448" style="float:right" onload="performance.mark('img onload')">
+    <img src="https://esroyo.github.io/pageload-examples/assets/www-letshare.png" id="img" width="536" height="448" style="float:right" alt="WWW">
 
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In nibh mauris cursus mattis molestie a iaculis at. Proin libero nunc consequat interdum. Semper feugiat nibh sed pulvinar proin gravida hendrerit lectus. In dictum non consectetur a erat nam at lectus urna. In nulla posuere sollicitudin aliquam ultrices sagittis orci. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Sit amet volutpat consequat mauris nunc congue nisi vitae suscipit. Volutpat commodo sed egestas egestas fringilla phasellus. Donec et odio pellentesque diam. Elementum eu facilisis sed odio morbi quis commodo odio. Sagittis orci a scelerisque purus.</p>
 
@@ -172,7 +138,7 @@
   </article>
 
 
-  <iframe src="https://proxy-throttle.deno.dev/?url=https://esroyo.github.io/pageload-examples/examples/basic-domcontentloaded/iframe.html" width="640" height="480" onload="performance.mark('iframe onload')"></iframe>
+  <iframe src="https://esroyo.github.io/pageload-examples/examples/basic-html/iframe.html" width="640" height="480" title="Sample iframe"></iframe>
 
 </body>
 </html>
