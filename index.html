@@ -17,7 +17,7 @@
       <li>Examples
         <ul>
           <li><a href="#basic-html">Loading a web site is a gradual process</a></li>
-          <li><a href="#basic-html-style">External styles don't block DOM parsing</a></li>
+          <li><a href="#basic-html-style">External styles block rendering, but not DOM parsing</a></li>
         </ul>
       </li>
       <li>Conclusions
@@ -83,7 +83,7 @@
   <hr>
 
   <article id="basic-html-style">
-    <h2>📝 External styles don't block DOM parsing</h2>
+    <h2>📝 External styles block rendering, but not DOM parsing</h2>
     <p>As we have seen in the previous example, the DOM content tree is gradually builded as the HTML is downloaded. What if we have an stylesheet link on that page?</p>
     <p>An external stylesheet by itself does not block <em>all</em> of the process. The fetching of the stylesheet starts, but the HTML parsing continues. The <code>DOMContentLoaded</code> event will trigger regardless the fetching of the style state.</p>
 
