@@ -440,3 +440,7 @@ article > details {
   border-color: transparent;
   padding: 0;
 }
+
+article > p:last-child {
+  text-align: right;
+}

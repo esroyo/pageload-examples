@@ -18,6 +18,7 @@
         <ul>
           <li><a href="#basic-html">Loading a web site is a gradual process</a></li>
           <li><a href="#basic-html-style">External styles block rendering, but not DOM parsing</a></li>
+          <li><a href="#basic-html-style-inline">Fast styled rendering, with inline styles</a></li>
         </ul>
       </li>
       <li>Conclusions
@@ -77,6 +78,8 @@
    30482.50 ├ loadEventStart
    30482.50 └ loadEventEnd</pre>
 
+    </details>
+
     <p>[<a href="#toc">TOP</a>]</p>
   </article>
 
@@ -124,13 +127,29 @@
    10841.60 ├ paint: first-paint
    10841.60 └ paint: first-contentful-paint</pre>
 
+    </details>
+
+    <details>
+      <summary>Quirks</summary>
+      <ul>
+        <li><mark>Chromium</mark> When the <code>link</code> tag is located in the <code>head</code>, then as claimed the DOM parsing is not blocked. However when the <code>link</code> tag is located in the <code>body</code> then <strong>It blocks the DOM parsing, the hard way</strong>. Test it in <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-body/" target="_blank">this secondary example</a>.</li>
+      </ul>
+    </details>
+
     <p>[<a href="#toc">TOP</a>]</p>
   </article>
 
-  <article id="basic-html-style-inline">
-    <h2>📝 Inline styles will block DOM parsing</h2>
+  <hr>
 
-    <p>Lorem ipsum</p>
+  <article id="basic-html-style-inline">
+    <h2>📝 Fast styled rendering, with inline styles</h2>
+
+    <p>We can achieve the gradual rendering effect seen on the <a href="#basic-html">first example</a> with an already styled content.</p>
+
+    <p>It is possible by inlining the contents of the stylesheet.</p>
+
+    <p>Although inlining styles is a limited option (prevents caching, is difficult to scale),
+    for the shake of the example It is cool to see how the browser can build the DOM and render styled contents as the HTML is dowloaded.</p>
 
     <p>
     <a href="https://proxy-throttle.deno.dev/?factor=5&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-inline%2F" target="_blank"><button>Open example</button></a>
@@ -139,7 +158,32 @@
 
     <details>
       <summary>Timeline of this example</summary>
-      <pre></pre>
+      <pre>
+       0.00 ┬ startTime
+      13.20 ├ requestStart
+     245.40 ├ responseStart
+            ┊
+    3264.70 ├ paint: first-paint
+    3264.70 ├ paint: first-contentful-paint
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+   35206.40 ├ responseEnd
+   35207.00 ├ domInteractive
+   35207.00 ├ domContentLoadedEventStart
+   35207.00 ├ domContentLoadedEventEnd
+   35207.20 ├ domComplete
+   35207.30 ├ loadEventStart
+   35207.30 └ loadEventEnd</pre>
+    </details>
 
     <p>[<a href="#toc">TOP</a>]</p>
   </article>
