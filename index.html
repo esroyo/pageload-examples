@@ -19,6 +19,7 @@
           <li><a href="#basic-html">Loading a web site is a gradual process</a></li>
           <li><a href="#basic-html-style">External styles block rendering, but not DOM parsing</a></li>
           <li><a href="#basic-html-style-inline">Fast styled rendering, with inline styles</a></li>
+          <li><a href="#basic-html-style-critical">Sweet spot: inline critical styles</a></li>
         </ul>
       </li>
       <li>Conclusions
@@ -51,8 +52,9 @@
     </p>
 
     <details>
-      <summary>Timeline of this example</summary>
-      <pre>
+      <summary>Timeline</summary>
+      <figure>
+        <pre>
        0.00 ┬ startTime
      136.60 ├ requestStart
      373.20 ├ responseStart
@@ -77,7 +79,10 @@
    30482.40 ├ domComplete
    30482.50 ├ loadEventStart
    30482.50 └ loadEventEnd</pre>
-
+        <figcaption>
+          Timeline: It shows the first paint happening much earlier than the HTML's response end.
+        </figcaption>
+      </figure>
     </details>
 
     <p>[<a href="#toc">TOP</a>]</p>
@@ -92,7 +97,7 @@
 
     <p><em>However</em>, although the <code>DOMContentLoaded</code> event fires, <strong>the page won't be displayed to the user</strong> until the fetching of the style is done.</p>
 
-    <p>This means an stylesheet resource doesn't block the DOM Content tree building, but will block the Rendering tree building.</p>
+    <p>This means an stylesheet resource doesn't block the DOM parsing, but will block the rendering.</p>
 
     <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style/" target="_blank"><button>Open example</button></a>
@@ -100,8 +105,9 @@
     </p>
 
     <details>
-      <summary>Timeline of this example</summary>
-      <pre>
+      <summary>Timeline</summary>
+      <figure>
+        <pre>
        0.00 ┬ startTime
      100.20 ├ requestStart
      295.40 ├ responseStart
@@ -126,13 +132,17 @@
    10745.50 ├ loadEventEnd
    10841.60 ├ paint: first-paint
    10841.60 └ paint: first-contentful-paint</pre>
+        <figcaption>
+          Timeline: It shows that an external style link does not block the <code>DOMContentLoaded</code> event. However the first paint won't happen until the download and processing of the style resource ends. 
+        </figcaption>
+    </figure>
 
     </details>
 
     <details>
       <summary>Quirks</summary>
       <ul>
-        <li><mark>Chromium</mark> When the <code>link</code> tag is located in the <code>head</code>, then as claimed the DOM parsing is not blocked. However when the <code>link</code> tag is located in the <code>body</code> then <strong>It blocks the DOM parsing, the hard way</strong>. Test it in <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-body/" target="_blank">this secondary example</a>.</li>
+        <li><mark>Blink</mark>; When the <code>link</code> tag is located in the <code>head</code>, then as claimed the DOM parsing is not blocked. However if the <code>link</code> tag is located in the <code>body</code>, <strong>It blocks the DOM parsing</strong> (the hard way). Test it in <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-body/" target="_blank">this secondary example</a>. Gecko and WebKit based browsers don't observe this difference between <code>body</code> and <code>head</code>.</li>
       </ul>
     </details>
 
@@ -144,9 +154,7 @@
   <article id="basic-html-style-inline">
     <h2>📝 Fast styled rendering, with inline styles</h2>
 
-    <p>We can achieve the gradual rendering effect seen on the <a href="#basic-html">first example</a> with an already styled content.</p>
-
-    <p>It is possible by inlining the contents of the stylesheet.</p>
+    <p>We can achieve the gradual rendering effect seen on the <a href="#basic-html">first example</a> while displaying already styled content. It is possible by inlining the contents of the stylesheet.</p>
 
     <p>Although inlining styles is a limited option (prevents caching, is difficult to scale),
     for the shake of the example It is cool to see how the browser can build the DOM and render styled contents as the HTML is dowloaded.</p>
@@ -157,8 +165,9 @@
     </p>
 
     <details>
-      <summary>Timeline of this example</summary>
-      <pre>
+      <summary>Timeline</summary>
+      <figure>
+        <pre>
        0.00 ┬ startTime
       13.20 ├ requestStart
      245.40 ├ responseStart
@@ -183,6 +192,62 @@
    35207.20 ├ domComplete
    35207.30 ├ loadEventStart
    35207.30 └ loadEventEnd</pre>
+        <figcaption>
+          Timeline: It shows an early painting, given there are no external resources.
+        </figcaption>
+      </figure>
+    </details>
+
+    <p>[<a href="#toc">TOP</a>]</p>
+  </article>
+
+  <hr>
+
+  <article id="basic-html-style-critical">
+    <h2>📝 Sweet spot: inline critical styles</h2>
+
+    <p>The best experience comes when only <a href="https://css-tricks.com/authoring-critical-fold-css/" target="_blank">critical styles</a> are inlined, as we get the gradual rendering effect of styled content.</p>
+
+    <p>However It forces the loading of the non-critical styles on a deferred stage. The <code>media</code> attribute <a href="https://github.com/filamentgroup/loadCSS" target="_blank">trick</a> is a well known option for the deferred load. Although It feels hackish and relies on JavaScript.</p>
+
+    <p>Another possiblity would be to put the non-critical styles in a <code>link rel="preload"</code> tag. Thus neither DOM parsing nor rendering should be blocked. Finally place the regular <code>link</code> to the same style at the very end of the <code>body</code>, where it <em>could</em> block the rendering but not the DOM. At that point the user should be already seeing content (styled with the critical CSS).</p>
+
+    <p>This sweet spot solution is ruined by one actor. As commented in the quirks of the <a href="#basic-html-style">external styles example</a>, Blink blocks the DOM parsing when it finds a style <code>link</code> in the <code>body</code>. Although user exeperience is good, the delay of <code>DOMContentLoaded</code> on Blink makes this solution non-generalizable.</p>
+
+    <a href="https://proxy-throttle.deno.dev/?factor=2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-critical%2F" target="_blank"><button>Open example</button></a>
+    <a href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fproxy-throttle.deno.dev%2F%3Ffactor%3D1%26url%3Dhttps%253A%252F%252Fesroyo.github.io%252Fpageload-examples%252Fexamples%252Fbasic-html-style-critical%252F" target="_blank"><button>Test on PageSpeed</button></a>
+    </p>
+
+    <details>
+      <summary>Timeline</summary>
+      <figure>
+        <pre>
+       0.00 ┬ startTime
+      77.00 ├ requestStart
+            ┊
+            ┊
+    3262.00 ├ responseStart
+    3323.00 ├ paint: first-contentful-paint
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+   12167.00 ├ responseEnd
+   12169.00 ├ domInteractive
+   12169.00 ├ domContentLoadedEventStart
+   12169.00 ├ domContentLoadedEventEnd
+            ┊
+            ┊
+            ┊
+            ┊
+   18751.00 ├ domComplete
+   18751.00 ├ loadEventStart
+   18751.00 └ loadEventEnd</pre>
+        <figcaption>
+          Timeline: It shows an early paint. Contents are displayed as they arrive, styled with the critical inlined styles. Meanwhile non-critical styles are being downloaded and won't block <code>DOMContentLoaded</code>. Once the non-critical styles are downloaded, <code>load</code> triggers and the styles are applied (reflow). This sequence of events is taken from a WebKit based browser.
+        </figcaption>
+    </figure>
     </details>
 
     <p>[<a href="#toc">TOP</a>]</p>
