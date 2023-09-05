@@ -38,7 +38,7 @@ function getPerformanceEntries() {
         'loadEventEnd',
     ];
 
-    const entryTypes = ['paint'];
+    const entryTypes = ['paint', 'mark'];
 
     return [
         ...Object.entries(performance.getEntriesByType('navigation').pop().toJSON()).filter(([k, v]) => navigationProps.includes(k)),

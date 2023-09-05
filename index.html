@@ -19,9 +19,10 @@
       <li>Examples
         <ul>
           <li><a href="#basic-html">Loading a web site is a gradual process</a></li>
-          <li><a href="#basic-html-style">External styles block rendering, but not DOM parsing</a></li>
+          <li><a href="#basic-html-style">External styles block rendering, but not the HTML parsing</a></li>
           <li><a href="#basic-html-style-inline">Fast styled rendering, with inline styles</a></li>
           <li><a href="#basic-html-style-critical">Sweet spot: inline critical styles</a></li>
+          <li><a href="#basic-html-script">Scripts block document parsing</a></li>
         </ul>
       </li>
       <li>Conclusions
@@ -45,7 +46,7 @@
 
     <p>Let's demonstrate that fact by loading a page with lots of text content. Page download is throttled by the server and takes a long time.</p>
     <p>Try to scroll down while the page is being downloaded.</p>
-    <p>The display keeps updating, but <code>DOMContentLoaded</code> and <code>load</code> events won't trigger until the download and parsing of the HTML is <em>completed</em>.</p>
+    <p>The display keeps updating, but <code>DOMContentLoaded</code> event won't trigger until the download and parsing of the HTML is <em>completed</em>.</p>
     <p>There is no <em>direct</em> correlation between the delay on those events and a poor core web vitals score. Although the page is loading, LCP will happen soon enough. This doesn't mean the "performance" of the page is good.</p>
 
     <p>
@@ -93,13 +94,13 @@
   <hr>
 
   <article id="basic-html-style">
-    <h2>📝 External styles block rendering, but not DOM parsing</h2>
+    <h2>📝 External styles block rendering, but not HTML parsing</h2>
     <p>As we have seen in the previous example, the DOM content tree is gradually builded as the HTML is downloaded. What if we have an stylesheet link on that page?</p>
     <p>An external stylesheet by itself does not block <em>all</em> of the process. The fetching of the stylesheet starts, but the HTML parsing continues. The <code>DOMContentLoaded</code> event will trigger regardless the fetching of the style state.</p>
 
     <p><em>However</em>, although the <code>DOMContentLoaded</code> event fires, <strong>the page won't be displayed to the user</strong> until the fetching of the style is done.</p>
 
-    <p>This means an stylesheet resource doesn't block the DOM parsing, but will block the rendering.</p>
+    <p>This means an stylesheet resource doesn't block the document parsing, but will block the rendering.</p>
 
     <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style/" target="_blank"><button>Open example</button></a>
@@ -144,7 +145,7 @@
     <details>
       <summary>Quirks</summary>
       <ul>
-        <li><mark>Blink</mark>; When the <code>link</code> tag is located in the <code>head</code>, then as claimed the DOM parsing is not blocked. However if the <code>link</code> tag is located in the <code>body</code>, <strong>It blocks the DOM parsing</strong> (the hard way). Test it in <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-body/" target="_blank">this secondary example</a>. Gecko and WebKit based browsers don't observe this difference between <code>body</code> and <code>head</code>.</li>
+        <li><mark>Blink</mark>; When the <code>link</code> tag is located in the <code>head</code>, then as claimed the document parsing is not blocked. However if the <code>link</code> tag is located in the <code>body</code>, <strong>It blocks the document parsing</strong> (the hard way). Test it in <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-body/" target="_blank">this secondary example</a>. Gecko and WebKit based browsers don't observe this difference between <code>body</code> and <code>head</code>.</li>
       </ul>
     </details>
 
@@ -212,18 +213,15 @@
 
     <p>However It forces the loading of the non-critical styles on a deferred stage. The <code>media</code> attribute <a href="https://github.com/filamentgroup/loadCSS" target="_blank">trick</a> is a well known option for the deferred load. Although It feels hackish and relies on JavaScript.</p>
 
-    <p>Another possiblity would be to put the non-critical styles in a <code>link rel="preload"</code> tag. Thus neither DOM parsing nor rendering should be blocked. Finally place the regular <code>link</code> to the same style at the very end of the <code>body</code>, where it <em>could</em> block the rendering but not the DOM. At that point the user should be already seeing content (styled with the critical CSS).</p>
+    <p>Another possiblity would be to put the non-critical styles in a <code>link rel="preload"</code> tag. That <code>link</code> wouldn't block document parsing nor rendering. Finally place the regular <code>link</code> to the same style at the very end of the <code>body</code>. Rendering can't be blocked if something has been already painted.</p>
 
-    <p>This sweet spot solution is ruined by one actor. As commented in the quirks of the <a href="#basic-html-style">external styles example</a>, Blink blocks the DOM parsing when it finds a style <code>link</code> in the <code>body</code>. Although user exeperience is good, the delay of <code>DOMContentLoaded</code> on Blink makes this solution non-generalizable.</p>
+    <p>This would be a sweet spot solution, except for the quirk commented on the <a href="#basic-html-style">external styles example</a>. Blink blocks the document parsing when it finds a style <code>link</code> in the <code>body</code>. Thus although the visual exeperience is good, the delay of <code>DOMContentLoaded</code> makes this solution non-generalizable.</p>
+
+    <p><a href="https://proxy-throttle.deno.dev/?factor=2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-critical-blink%2F" target="_blank">This secondary example</a> shows the alternative for Blink (using the <code>onload</code> attribute).</p>
 
     <p>
     <a href="https://proxy-throttle.deno.dev/?factor=2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-critical%2F" target="_blank"><button>Open example</button></a>
     <a href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fproxy-throttle.deno.dev%2F%3Ffactor%3D1%26url%3Dhttps%253A%252F%252Fesroyo.github.io%252Fpageload-examples%252Fexamples%252Fbasic-html-style-critical%252F" target="_blank"><button>Test on PageSpeed</button></a>
-    </p>
-
-    <p>
-    <a href="https://proxy-throttle.deno.dev/?factor=2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-critical-blink%2F" target="_blank"><button>Open alternative for Blink</button></a>
-    <a href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fproxy-throttle.deno.dev%2F%3Ffactor%3D1%26url%3Dhttps%253A%252F%252Fesroyo.github.io%252Fpageload-examples%252Fexamples%252Fbasic-html-style-critical-blink%252F" target="_blank"><button>Test on PageSpeed</button></a>
     </p>
 
     <details>
@@ -256,6 +254,63 @@
           Timeline: It shows an early paint. Contents are displayed as they arrive, styled with the critical inlined styles. Meanwhile non-critical styles are being preloaded and won't block anything. Once the non-critical styles are downloaded the styles are applied (reflow). This sequence of events is taken from a WebKit based browser.
         </figcaption>
     </figure>
+    </details>
+
+    <p>[<a href="#toc">TOP</a>]</p>
+  </article>
+
+  <hr>
+
+  <article id="basic-html-script">
+    <h2>📝 Scripts block document parsing</h2>
+    <p>When an script is found in the HTML, the browser pauses the document parsing until the script is executed.</p>
+
+    <p>If the script is external, It must be fetched and then executed.</p>
+
+    <p>As simple as that, document parsing won't continue until the script ends execution.</p>
+
+    <p>
+    <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-script/" target="_blank"><button>Open example</button></a>
+    <a href="https://pagespeed.web.dev/analysis?url=https://esroyo.github.io/pageload-examples/examples/basic-html-script/" target="_blank"><button>Test on PageSpeed</button></a>
+    </p>
+
+    <details>
+      <summary>Timeline</summary>
+      <figure>
+        <pre></pre>
+        <figcaption>
+          Timeline: It shows that an external style link does not block the <code>DOMContentLoaded</code> event. However the first paint won't happen until the download and processing of the style resource ends. 
+        </figcaption>
+    </figure>
+
+    </details>
+
+    <p>[<a href="#toc">TOP</a>]</p>
+  </article>
+
+  <hr>
+
+  <article id="basic-html-style-script">
+    <h2>📝 Scripts execution requires to finish loading styles</h2>
+
+    <p>As we have seen <a href="#basic-html-style">previously</a>, and external stylesheet will not block the document parsing. However if the external style is followed by an script, things will change.</p>
+    
+    <p>An script not only pauses the document parsing, but also requires to finish loading all the styles in process. Only then will start its execution.</p>
+
+    <p>
+    <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script/" target="_blank"><button>Open example</button></a>
+    <a href="https://pagespeed.web.dev/analysis?url=https://esroyo.github.io/pageload-examples/examples/basic-html-style-script/" target="_blank"><button>Test on PageSpeed</button></a>
+    </p>
+
+    <details>
+      <summary>Timeline</summary>
+      <figure>
+        <pre></pre>
+        <figcaption>
+          Timeline: It shows that an external style link does not block the <code>DOMContentLoaded</code> event. However the first paint won't happen until the download and processing of the style resource ends. 
+        </figcaption>
+    </figure>
+
     </details>
 
     <p>[<a href="#toc">TOP</a>]</p>
