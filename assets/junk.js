@@ -12,4 +12,4 @@ Tincidunt vitae semper quis lectus. Massa tincidunt dui ut ornare lectus sit ame
 
 */
 
-performance.mark('script execution');
+performance.mark(`script execution${document.currentScript.dataset.message || ''}`);

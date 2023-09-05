@@ -16,19 +16,13 @@
   <details id="toc" open>
     <summary>Table of contents</summary>
     <ul>
-      <li>Examples
-        <ul>
-          <li><a href="#basic-html">Loading a web site is a gradual process</a></li>
-          <li><a href="#basic-html-style">External styles block rendering, but not the HTML parsing</a></li>
-          <li><a href="#basic-html-style-inline">Fast styled rendering, with inline styles</a></li>
-          <li><a href="#basic-html-style-critical">Sweet spot: inline critical styles</a></li>
-          <li><a href="#basic-html-script">Scripts block document parsing, but not rendering</a></li>
-          <li><a href="#basic-html-style-script">Scripts execution requires to finish loading styles</a></li>
-        </ul>
-      </li>
-      <li>Conclusions
-      </li>
-    <ul>
+      <li><a href="#basic-html">Loading a web site is a gradual process</a></li>
+      <li><a href="#basic-html-style">External styles block rendering, but not the HTML parsing</a></li>
+      <li><a href="#basic-html-style-inline">Fast styled rendering, with inline styles</a></li>
+      <li><a href="#basic-html-style-critical">Sweet spot: inline critical styles</a></li>
+      <li><a href="#basic-html-script">Scripts block document parsing, but not rendering</a></li>
+      <li><a href="#basic-html-style-script">Scripts execution requires to finish any ongoing styles loading</a></li>
+    </ul>
   </details>  
 
   <hr>
@@ -113,12 +107,13 @@
       <figure>
         <pre>
        0.00 ┬ startTime
-     100.20 ├ requestStart
-     295.40 ├ responseStart
-     298.70 ├ responseEnd
-     326.40 ├ domInteractive
-     326.50 ├ domContentLoadedEventStart
-     326.50 ├ domContentLoadedEventEnd
+      83.90 ├ requestStart
+     272.10 ├ responseStart
+     274.30 ├ responseEnd
+     280.10 ├ resourceStart: link("…mples/assets/new.css")
+     287.80 ├ domInteractive
+     287.80 ├ domContentLoadedEventStart
+     287.80 ├ domContentLoadedEventEnd
             ┊
             ┊
             ┊
@@ -131,11 +126,13 @@
             ┊
             ┊
             ┊
-   10745.40 ├ domComplete
-   10745.50 ├ loadEventStart
-   10745.50 ├ loadEventEnd
-   10841.60 ├ paint: first-paint
-   10841.60 └ paint: first-contentful-paint</pre>
+            ┊
+   10559.70 ├ resourceEnd: link("…mples/assets/new.css")
+   10692.60 ├ domComplete
+   10692.60 ├ loadEventStart
+   10692.60 ├ loadEventEnd
+   10833.80 ├ paint: first-paint
+   10833.80 └ paint: first-contentful-paint</pre>
         <figcaption>
           Timeline: It shows that an external style link does not block the <code>DOMContentLoaded</code> event. However the first paint won't happen until the download and processing of the style resource ends. 
         </figcaption>
@@ -230,27 +227,30 @@
       <figure>
         <pre>
        0.00 ┬ startTime
-      77.00 ├ requestStart
+      84.00 ├ requestStart
             ┊
             ┊
-    3262.00 ├ responseStart
-    3323.00 ├ paint: first-contentful-paint
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-   12167.00 ├ responseEnd
-   12169.00 ├ domInteractive
-   12169.00 ├ domContentLoadedEventStart
-   12169.00 ├ domContentLoadedEventEnd
+    3226.00 ├ responseStart
+    3275.00 ├ resourceStart: link("…mples/assets/new.css")
+    3313.00 ├ paint: first-contentful-paint
             ┊
             ┊
             ┊
             ┊
-   18751.00 ├ domComplete
-   18751.00 ├ loadEventStart
-   18751.00 └ loadEventEnd</pre>
+            ┊
+            ┊
+   12443.00 ├ responseEnd
+   12445.00 ├ domInteractive
+   12445.00 ├ domContentLoadedEventStart
+   12445.00 ├ domContentLoadedEventEnd
+            ┊
+            ┊
+            ┊
+            ┊
+   18586.00 ├ resourceEnd: link("…mples/assets/new.css")
+   18779.00 ├ domComplete
+   18779.00 ├ loadEventStart
+   18779.00 └ loadEventEnd</pre>
         <figcaption>
           Timeline: It shows an early paint. Contents are displayed as they arrive, styled with the critical inlined styles. Meanwhile non-critical styles are being preloaded and won't block anything. Once the non-critical styles are downloaded the styles are applied (reflow). This sequence of events is taken from a WebKit based browser.
         </figcaption>
@@ -322,13 +322,15 @@
   <hr>
 
   <article id="basic-html-style-script">
-    <h2>📝 Scripts execution requires to finish loading styles</h2>
+    <h2>📝 Scripts execution requires to finish the ongoing styles loading</h2>
 
-    <p>As we have seen <a href="#basic-html-style">previously</a>, and external stylesheet will not block the document parsing. However if the external style is followed by an script, things will change.</p>
-    
-    <p>An script not only pauses the document parsing, but also requires to finish loading all the styles in process. Only then will start its execution.</p>
+    <p>As we have seen <a href="#basic-html-style">previously</a>, and external stylesheet will not block the document parsing. However if the external style is followed by an script, things change.</p>
+   
+    <p>An script not only pauses the document parsing, but also requires to finish the <em>ongoing</em> styles loading. Only then will start its execution.</p>
 
     <p>So document parsing becomes blocked when it gets to an script. In turn the script execution is blocked by the loading styles.</p>
+
+    <p>Note we emphasize the fact that only <em>ongoing</em> loading styles will block the script. If the order is inverted and the script is placed before the style, It will get executed immediately. See that in <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-script-style/" target="_blank">this secondary example</a> (timeline will be similar to the <a href="#basic-html-style">second case</a>).</p>
 
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script/" target="_blank"><button>Open example</button></a>
     <a href="https://pagespeed.web.dev/analysis?url=https://esroyo.github.io/pageload-examples/examples/basic-html-style-script/" target="_blank"><button>Test on PageSpeed</button></a>
@@ -368,7 +370,7 @@
    11041.90 ├ loadEventStart
    11042.00 └ loadEventEnd</pre>
         <figcaption>
-          Timeline: The external style by itself would not block the document parsing, as seen <a href="#basic-html-style">previously</a>. However the script gets blocked by the style loading, and in turn the script blocks the document parsing. Thus we end up bounded by the style loading.
+          Timeline: The external style by itself would not block the document parsing, as seen <a href="#basic-html-style">previously</a>. However the script gets blocked by the style loading, and in turn the script blocks the document parsing. Thus DOM interactive is bounded by the style loading plus the script execution.
         </figcaption>
     </figure>
 
