@@ -47,8 +47,19 @@
 
     <p>
     <a href="https://proxy-throttle.deno.dev/?factor=5&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html%2F" target="_blank"><button>Open example</button></a>
-    <a href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fproxy-throttle.deno.dev%2F%3Ffactor%3D1%26url%3Dhttps%253A%252F%252Fesroyo.github.io%252Fpageload-examples%252Fexamples%252Fbasic-html%252F" target="_blank"><button>Test on PageSpeed</button></a>
     </p>
+
+    <details>
+      <summary>HTML outline</summary>
+      <pre>
+&lt;html data-throttle="5"&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;!-- Long HTML contents --&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+    </details>
 
     <details>
       <summary>Timeline</summary>
@@ -100,8 +111,18 @@
 
     <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style/" target="_blank"><button>Open example</button></a>
-    <a href="https://pagespeed.web.dev/analysis?url=https://esroyo.github.io/pageload-examples/examples/basic-html-style/" target="_blank"><button>Test on PageSpeed</button></a>
     </p>
+
+    <details>
+      <summary>HTML outline</summary>
+      <pre>
+&lt;head&gt;
+  &lt;link rel="stylesheet" href="./assets/new.css" data-throttle="10"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- Long HTML contents --&gt;
+&lt;/body&gt;</pre>
+    </details>
 
     <details>
       <summary>Timeline</summary>
@@ -135,7 +156,7 @@
    10833.80 ├ paint: first-paint
    10833.80 └ paint: first-contentful-paint</pre>
         <figcaption>
-          Timeline: It shows that an external style link does not block the <code>DOMContentLoaded</code> event. However the first paint won't happen until the download and processing of the style resource ends. 
+          Timeline: It shows that an external style link does not block the document parsing nor the <code>DOMContentLoaded</code> event. However the first paint won't happen until the download and processing of the style resource ends. 
         </figcaption>
     </figure>
 
@@ -163,8 +184,20 @@
 
     <p>
     <a href="https://proxy-throttle.deno.dev/?factor=5&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-inline%2F" target="_blank"><button>Open example</button></a>
-    <a href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fproxy-throttle.deno.dev%2F%3Ffactor%3D1%26url%3Dhttps%253A%252F%252Fesroyo.github.io%252Fpageload-examples%252Fexamples%252Fbasic-html-style-inline%252F" target="_blank"><button>Test on PageSpeed</button></a>
     </p>
+
+    <details>
+      <summary>HTML outline</summary>
+      <pre>
+&lt;head&gt;
+  &lt;style&gt;
+    /* Inlined CSS */
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- Long HTML contents --&gt;
+&lt;/body&gt;</pre>
+    </details>
 
     <details>
       <summary>Timeline</summary>
@@ -220,8 +253,22 @@
 
     <p>
     <a href="https://proxy-throttle.deno.dev/?factor=2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-critical%2F" target="_blank"><button>Open example</button></a>
-    <a href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fproxy-throttle.deno.dev%2F%3Ffactor%3D1%26url%3Dhttps%253A%252F%252Fesroyo.github.io%252Fpageload-examples%252Fexamples%252Fbasic-html-style-critical%252F" target="_blank"><button>Test on PageSpeed</button></a>
     </p>
+
+    <details>
+      <summary>HTML outline</summary>
+      <pre>
+&lt;head&gt;
+  &lt;link rel="preload" as="style" href="./assets/new.css" data-throttle="15"&gt;
+  &lt;style&gt;
+    /* Limited critical CSS */
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- Long HTML contents --&gt;
+  &lt;link rel="stylesheet" href="./assets/new.css" data-throttle="15"&gt;
+&lt;/body&gt;</pre>
+    </details>
 
     <details>
       <summary>Timeline</summary>
@@ -273,8 +320,18 @@
 
     <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-script/" target="_blank"><button>Open example</button></a>
-    <a href="https://pagespeed.web.dev/analysis?url=https://esroyo.github.io/pageload-examples/examples/basic-html-script/" target="_blank"><button>Test on PageSpeed</button></a>
     </p>
+
+    <details>
+      <summary>HTML outline</summary>
+      <pre>
+&lt;head&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- Long HTML contents --&gt;
+  &lt;script src="./assets/junk.js" data-throttle="10"&gt;&lt;/script&gt;
+&lt;/body&gt;</pre>
+    </details>
 
     <details>
       <summary>Timeline</summary>
@@ -311,7 +368,7 @@
    10420.20 ├ loadEventStart
    10420.20 └ loadEventEnd</pre>
         <figcaption>
-          Timeline: It shows that an external script blocks document parsing. <code>DOMContentLoaded</code> event won't fire until the script is fetched and executed. However if enough document content has been already parsed, paint still happens. 
+          Timeline: It shows that an external script blocks document parsing. Interactive state won't be reached until the script is fetched and executed. However if enough document content has been already parsed, paint still happens.
         </figcaption>
     </figure>
 
@@ -333,9 +390,23 @@
 
     <p>Note we emphasize the fact that only <em>ongoing</em> loading styles will block the script. If the order is inverted and the script is placed before the style, It will get executed immediately. See that in <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-script-style/" target="_blank">this secondary example</a> (timeline will be similar to the <a href="#basic-html-style">second case</a>).</p>
 
+    <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script/" target="_blank"><button>Open example</button></a>
-    <a href="https://pagespeed.web.dev/analysis?url=https://esroyo.github.io/pageload-examples/examples/basic-html-style-script/" target="_blank"><button>Test on PageSpeed</button></a>
     </p>
+
+    <details>
+      <summary>HTML outline</summary>
+      <pre>
+&lt;head&gt;
+  &lt;link rel="stylesheet" href="./assets/new.css" data-throttle="10"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- Long HTML contents --&gt;
+  &lt;script&gt;
+    performance.mark('script execution');
+  &lt;/script&gt;
+&lt;/body&gt;</pre>
+    </details>
 
     <details>
       <summary>Timeline</summary>
@@ -396,19 +467,69 @@
 
     <p>They are all executed at the same time, before <code>DOMContentLoaded</code>. Therefore all deferred scripts need to be completely downloaded before any of them can execute.</p>
 
-    <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-defer/" target="_blank"><button>Open example</button></a>
-    <a href="https://pagespeed.web.dev/analysis?url=https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-defer/" target="_blank"><button>Test on PageSpeed</button></a>
-    </p>
+    <p><a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-defer/" target="_blank"><button>Open example</button></a></p>
+
+    <details>
+      <summary>HTML outline</summary>
+      <pre>
+&lt;head&gt;
+  &lt;link rel="stylesheet" href="./assets/new.css" data-throttle="10"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;script src="./assets/junk.js" defer data-throttle="5"&gt;&lt;/script&gt;
+  &lt;script src="./assets/junk.js" defer data-throttle="2"&gt;&lt;/script&gt;
+  &lt;!-- Long HTML contents --&gt;
+&lt;/body&gt;</pre>
+    </details>
 
     <details>
       <summary>Timeline</summary>
       <figure>
-        <pre></pre>
+        <pre>
+       0.00 ┬ startTime
+      14.40 ├ requestStart
+            ┊
+     380.50 ├ responseStart
+     383.60 ├ responseEnd
+     389.50 ├ resourceStart: link("…mples/assets/new.css")
+     389.90 ├ resourceStart: script("…mples/assets/junk.js")
+     390.10 ├ resourceStart: script("…mples/assets/junk.js")
+     399.80 ├ domInteractive
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+    2839.10 ├ resourceEnd: script("…mples/assets/junk.js")
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+    5578.00 ├ resourceEnd: script("…mples/assets/junk.js")
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+   10518.10 ├ resourceEnd: link("…mples/assets/new.css")
+   10566.40 ├ mark: script execution -- deferred 1
+   10566.70 ├ mark: script execution -- deferred 2
+   10566.80 ├ domContentLoadedEventStart
+   10566.80 ├ domContentLoadedEventEnd
+   10624.40 ├ paint: first-paint
+   10624.40 ├ paint: first-contentful-paint
+   10642.40 ├ domComplete
+   10642.50 ├ loadEventStart
+   10642.50 └ loadEventEnd</pre>
         <figcaption>
-          Timeline: The external style by itself would not block the document parsing, as seen <a href="#basic-html-style">previously</a>. However the script gets blocked by the style loading, and in turn the script blocks the document parsing. Thus DOM interactive is bounded by the style loading plus the script execution.
+          Timeline: It shows two deferred scripts that start to download as the document parses. The document parsing ends and It reaches the <em>interactive</em> state. The first deferred script takes 5s to download and the second takes 2s. They need to wait for the style download to end. Then both get executed in order. Finally <code>DOMContentLoaded</code> is fired. The rendering is hold by the style download, not the scripts. Without the external style, rendering would take place almost immediately.
         </figcaption>
     </figure>
-
     </details>
 
     <p>[<a href="#toc">TOP</a>]</p>
