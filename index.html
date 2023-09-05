@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <title>Pageload examples</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Learn how a web page loads by example">
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
   <link rel="stylesheet" href="./assets/new.css">
 </head>
 <body>
@@ -214,8 +216,14 @@
 
     <p>This sweet spot solution is ruined by one actor. As commented in the quirks of the <a href="#basic-html-style">external styles example</a>, Blink blocks the DOM parsing when it finds a style <code>link</code> in the <code>body</code>. Although user exeperience is good, the delay of <code>DOMContentLoaded</code> on Blink makes this solution non-generalizable.</p>
 
+    <p>
     <a href="https://proxy-throttle.deno.dev/?factor=2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-critical%2F" target="_blank"><button>Open example</button></a>
     <a href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fproxy-throttle.deno.dev%2F%3Ffactor%3D1%26url%3Dhttps%253A%252F%252Fesroyo.github.io%252Fpageload-examples%252Fexamples%252Fbasic-html-style-critical%252F" target="_blank"><button>Test on PageSpeed</button></a>
+    </p>
+
+    <p>
+    <a href="https://proxy-throttle.deno.dev/?factor=2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-critical-blink%2F" target="_blank"><button>Open alternative for Blink</button></a>
+    <a href="https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fproxy-throttle.deno.dev%2F%3Ffactor%3D1%26url%3Dhttps%253A%252F%252Fesroyo.github.io%252Fpageload-examples%252Fexamples%252Fbasic-html-style-critical-blink%252F" target="_blank"><button>Test on PageSpeed</button></a>
     </p>
 
     <details>
@@ -245,7 +253,7 @@
    18751.00 ├ loadEventStart
    18751.00 └ loadEventEnd</pre>
         <figcaption>
-          Timeline: It shows an early paint. Contents are displayed as they arrive, styled with the critical inlined styles. Meanwhile non-critical styles are being downloaded and won't block <code>DOMContentLoaded</code>. Once the non-critical styles are downloaded, <code>load</code> triggers and the styles are applied (reflow). This sequence of events is taken from a WebKit based browser.
+          Timeline: It shows an early paint. Contents are displayed as they arrive, styled with the critical inlined styles. Meanwhile non-critical styles are being preloaded and won't block anything. Once the non-critical styles are downloaded the styles are applied (reflow). This sequence of events is taken from a WebKit based browser.
         </figcaption>
     </figure>
     </details>
