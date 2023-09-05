@@ -39,9 +39,11 @@ function getPerformanceEntries() {
     ];
 
     const entryTypes = ['paint', 'mark'];
+    const resourceTypes = ['script', 'link'];
 
     return [
         ...Object.entries(performance.getEntriesByType('navigation').pop().toJSON()).filter(([k, v]) => navigationProps.includes(k)),
+        ...performance.getEntriesByType('resource').filter(({ initiatorType }) => resourceTypes.includes(initiatorType)).flatMap(({ initiatorType, name: fullName, responseEnd, startTime }) => { const name = `${initiatorType}("…${fullName.slice(-20)}")`; return [[`resourceStart: ${name}`, startTime], [`resourceEnd: ${name}`, responseEnd]] }),
         ...performance.getEntries().filter(({entryType}) => entryTypes.includes(entryType)).map(({entryType, name, startTime}) => [`${entryType}: ${name}`, startTime]),
     ].sort((e1, e2) => e1[1] - e2[1]);
 }

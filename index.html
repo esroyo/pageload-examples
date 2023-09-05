@@ -13,7 +13,7 @@
     <h1>🌍&nbsp; Page loading</h1>
   </header>
 
-  <details id="toc">
+  <details id="toc" open>
     <summary>Table of contents</summary>
     <ul>
       <li>Examples
@@ -22,7 +22,8 @@
           <li><a href="#basic-html-style">External styles block rendering, but not the HTML parsing</a></li>
           <li><a href="#basic-html-style-inline">Fast styled rendering, with inline styles</a></li>
           <li><a href="#basic-html-style-critical">Sweet spot: inline critical styles</a></li>
-          <li><a href="#basic-html-script">Scripts block document parsing</a></li>
+          <li><a href="#basic-html-script">Scripts block document parsing, but not rendering</a></li>
+          <li><a href="#basic-html-style-script">Scripts execution requires to finish loading styles</a></li>
         </ul>
       </li>
       <li>Conclusions
@@ -262,12 +263,12 @@
   <hr>
 
   <article id="basic-html-script">
-    <h2>📝 Scripts block document parsing</h2>
+    <h2>📝 Scripts block document parsing, but not rendering</h2>
     <p>When an script is found in the HTML, the browser pauses the document parsing until the script is executed.</p>
 
-    <p>If the script is external, It must be fetched and then executed.</p>
+    <p>If the script is external, It must be fetched and then executed. Document parsing won't continue until the script ends execution.</p>
 
-    <p>As simple as that, document parsing won't continue until the script ends execution.</p>
+    <p>Givent that an script does not necessarily block the rendering, the location of the script in the document is important. If the script is located at the end of the body, some rendering is possible</p>.
 
     <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-script/" target="_blank"><button>Open example</button></a>
@@ -277,9 +278,39 @@
     <details>
       <summary>Timeline</summary>
       <figure>
-        <pre></pre>
+        <pre>
+       0.00 ┬ startTime
+      12.90 ├ requestStart
+      14.20 ├ responseStart
+      16.50 ├ responseEnd
+      20.20 ├ resourceStart: script("…mples/assets/junk.js")
+      62.10 ├ paint: first-paint
+      62.10 ├ paint: first-contentful-paint
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+   10395.70 ├ resourceEnd: script("…mples/assets/junk.js")
+   10397.10 ├ mark: script execution
+   10402.50 ├ domInteractive
+   10402.60 ├ domContentLoadedEventStart
+   10402.60 ├ domContentLoadedEventEnd
+   10420.10 ├ domComplete
+   10420.20 ├ loadEventStart
+   10420.20 └ loadEventEnd</pre>
         <figcaption>
-          Timeline: It shows that an external style link does not block the <code>DOMContentLoaded</code> event. However the first paint won't happen until the download and processing of the style resource ends. 
+          Timeline: It shows that an external script blocks document parsing. <code>DOMContentLoaded</code> event won't fire until the script is fetched and executed. However if enough document content has been already parsed, paint still happens. 
         </figcaption>
     </figure>
 
@@ -297,7 +328,8 @@
     
     <p>An script not only pauses the document parsing, but also requires to finish loading all the styles in process. Only then will start its execution.</p>
 
-    <p>
+    <p>So document parsing becomes blocked when it gets to an script. In turn the script execution is blocked by the loading styles.</p>
+
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script/" target="_blank"><button>Open example</button></a>
     <a href="https://pagespeed.web.dev/analysis?url=https://esroyo.github.io/pageload-examples/examples/basic-html-style-script/" target="_blank"><button>Test on PageSpeed</button></a>
     </p>
@@ -305,9 +337,38 @@
     <details>
       <summary>Timeline</summary>
       <figure>
-        <pre></pre>
+        <pre>
+       0.00 ┬ startTime
+      13.50 ├ requestStart
+      14.50 ├ responseStart
+      17.10 ├ responseEnd
+      21.50 ├ resourceStart: link("…mples/assets/new.css")
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+   10664.50 ├ resourceEnd: link("…mples/assets/new.css")
+   10790.70 ├ mark: script execution
+   10826.20 ├ domInteractive
+   10826.20 ├ domContentLoadedEventStart
+   10826.20 ├ domContentLoadedEventEnd
+   10842.20 ├ paint: first-paint
+   10842.20 ├ paint: first-contentful-paint
+   11041.90 ├ domComplete
+   11041.90 ├ loadEventStart
+   11042.00 └ loadEventEnd</pre>
         <figcaption>
-          Timeline: It shows that an external style link does not block the <code>DOMContentLoaded</code> event. However the first paint won't happen until the download and processing of the style resource ends. 
+          Timeline: The external style by itself would not block the document parsing, as seen <a href="#basic-html-style">previously</a>. However the script gets blocked by the style loading, and in turn the script blocks the document parsing. Thus we end up bounded by the style loading.
         </figcaption>
     </figure>
 
