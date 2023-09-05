@@ -22,6 +22,7 @@
       <li><a href="#basic-html-style-critical">Sweet spot: inline critical styles</a></li>
       <li><a href="#basic-html-script">Scripts block document parsing, but not rendering</a></li>
       <li><a href="#basic-html-style-script">Scripts execution requires to finish any ongoing styles loading</a></li>
+      <li><a href="#basic-html-style-script-defer">Deferred scripts don't block parsing</a></li>
     </ul>
   </details>  
 
@@ -378,6 +379,41 @@
 
     <p>[<a href="#toc">TOP</a>]</p>
   </article>
+
+  <hr>
+
+  <article id="basic-html-style-script-defer">
+    <h2>📝 Deferred scripts don't block parsing</h2>
+
+    <p>Even though deferred scripts don't block document parsing and get downloaded in parallel (with low priority), they share some key behaviours with the "normal" synchronous script tags:
+      <ul>
+        <li>They are executed in the order they were found in the document.</li>
+        <li>They must wait for ongoing styles loading (if any) to end.</li>
+        <li>They are executed before <code>DOMContentLoaded</code> event.</li>
+        <li>They don't block rendering. (see <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-script-defer/" target="_blank">secondary example</a>)</li>
+      </ul>
+    </p>
+
+    <p>They are all executed at the same time, before <code>DOMContentLoaded</code>. Therefore all deferred scripts need to be completely downloaded before any of them can execute.</p>
+
+    <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-defer/" target="_blank"><button>Open example</button></a>
+    <a href="https://pagespeed.web.dev/analysis?url=https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-defer/" target="_blank"><button>Test on PageSpeed</button></a>
+    </p>
+
+    <details>
+      <summary>Timeline</summary>
+      <figure>
+        <pre></pre>
+        <figcaption>
+          Timeline: The external style by itself would not block the document parsing, as seen <a href="#basic-html-style">previously</a>. However the script gets blocked by the style loading, and in turn the script blocks the document parsing. Thus DOM interactive is bounded by the style loading plus the script execution.
+        </figcaption>
+    </figure>
+
+    </details>
+
+    <p>[<a href="#toc">TOP</a>]</p>
+  </article>
+
 
 </body>
 </html>
