@@ -17,12 +17,12 @@
     <summary>Table of contents</summary>
     <ul>
       <li><a href="#basic-html">Loading a web site is a gradual process</a></li>
-      <li><a href="#basic-html-style">External styles block rendering, but not the HTML parsing</a></li>
+      <li><a href="#basic-html-style">External styles block rendering, but not document parsing</a></li>
       <li><a href="#basic-html-style-inline">Fast styled rendering, with inline styles</a></li>
       <li><a href="#basic-html-style-critical">Sweet spot: inline critical styles</a></li>
       <li><a href="#basic-html-script">Scripts block document parsing, but not rendering</a></li>
       <li><a href="#basic-html-style-script">Scripts execution requires to finish any ongoing styles loading</a></li>
-      <li><a href="#basic-html-style-script-defer">Deferred scripts don't block parsing</a></li>
+      <li><a href="#basic-html-style-script-defer">Deferred scripts don't block document parsing</a></li>
     </ul>
   </details>  
 
@@ -101,7 +101,7 @@
   <hr>
 
   <article id="basic-html-style">
-    <h2>📝 External styles block rendering, but not HTML parsing</h2>
+    <h2>📝 External styles block rendering, but not document parsing</h2>
     <p>As we have seen in the previous example, the DOM content tree is gradually builded as the HTML is downloaded. What if we have an stylesheet link on that page?</p>
     <p>An external stylesheet by itself does not block <em>all</em> of the process. The fetching of the stylesheet starts, but the HTML parsing continues. The <code>DOMContentLoaded</code> event will trigger regardless the fetching of the style state.</p>
 
@@ -390,6 +390,8 @@
 
     <p>Note we emphasize the fact that only <em>ongoing</em> loading styles will block the script. If the order is inverted and the script is placed before the style, It will get executed immediately. See that in <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-script-style/" target="_blank">this secondary example</a> (timeline will be similar to the <a href="#basic-html-style">second case</a>).</p>
 
+    <p><strong>This rule only applies to <em>initial</em> styles</strong>. That is to stylesheet links that are in the inicial HTML response. Stylesheet links added dynamically do not block successive scripts, even if they are added to the document before script.</p>
+
     <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script/" target="_blank"><button>Open example</button></a>
     </p>
@@ -454,18 +456,20 @@
   <hr>
 
   <article id="basic-html-style-script-defer">
-    <h2>📝 Deferred scripts don't block parsing</h2>
+    <h2>📝 Deferred scripts don't block document parsing</h2>
 
     <p>Even though deferred scripts don't block document parsing and get downloaded in parallel (with low priority), they share some key behaviours with the "normal" synchronous script tags:
       <ul>
-        <li>They are executed in the order they were found in the document.</li>
-        <li>They must wait for ongoing styles loading (if any) to end.</li>
+        <li>They are executed in the order they were added to the DOM tree.</li>
         <li>They are executed before <code>DOMContentLoaded</code> event.</li>
         <li>They don't block rendering. (see <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-script-defer/" target="_blank">secondary example</a>)</li>
+        <li>Before execution they must wait for ongoing styles loading (if any) to end.</li>
       </ul>
     </p>
 
     <p>They are all executed at the same time, before <code>DOMContentLoaded</code>. Therefore all deferred scripts need to be completely downloaded before any of them can execute.</p>
+
+    <p>Roughtly we can think of deferred scripts as synchronous scripts whose execution is pushed towards the end of the document parsing process, with the benefit of prefetching them.</p>
 
     <p><a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-defer/" target="_blank"><button>Open example</button></a></p>
 
@@ -476,8 +480,8 @@
   &lt;link rel="stylesheet" href="./assets/new.css" data-throttle="10"&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;script src="./assets/junk.js" defer data-throttle="5"&gt;&lt;/script&gt;
-  &lt;script src="./assets/junk.js" defer data-throttle="2"&gt;&lt;/script&gt;
+  &lt;script src="./assets/junk.js#def1" defer data-throttle="5"&gt;&lt;/script&gt;
+  &lt;script src="./assets/junk.js#def2" defer data-throttle="2"&gt;&lt;/script&gt;
   &lt;!-- Long HTML contents --&gt;
 &lt;/body&gt;</pre>
     </details>
@@ -492,21 +496,21 @@
      380.50 ├ responseStart
      383.60 ├ responseEnd
      389.50 ├ resourceStart: link("…mples/assets/new.css")
-     389.90 ├ resourceStart: script("…mples/assets/junk.js")
-     390.10 ├ resourceStart: script("…mples/assets/junk.js")
+     389.90 ├ resourceStart: script("…mples/assets/junk.js#def1")
+     390.10 ├ resourceStart: script("…mples/assets/junk.js#def2")
      399.80 ├ domInteractive
             ┊
             ┊
             ┊
             ┊
             ┊
-    2839.10 ├ resourceEnd: script("…mples/assets/junk.js")
+    2839.10 ├ resourceEnd: script("…mples/assets/junk.js#def2")
             ┊
             ┊
             ┊
             ┊
             ┊
-    5578.00 ├ resourceEnd: script("…mples/assets/junk.js")
+    5578.00 ├ resourceEnd: script("…mples/assets/junk.js#def1")
             ┊
             ┊
             ┊
@@ -534,6 +538,53 @@
 
     <p>[<a href="#toc">TOP</a>]</p>
   </article>
+
+  <hr>
+
+  <article id="basic-html-style-script-async">
+    <h2>📝 Async scripts block (almost) nothing</h2>
+
+    <p>Async scripts are like "free agents". They:
+      <ul>
+        <li>Do not block document parsing.</li>
+        <li>Do not block rendering.</li>
+        <li>Do not require the ongoing styles loading to end.</li>
+        <li>Do not require pending scripts to execute.</li>
+        <li>Will execute as soon as possible, once they are downloaded.</li>
+        <li>Because of that, they may delay ongoing critical processes! (for instance, they could execute while document parsing has not finished).</li>
+        <li>Finally, they do block the window <code>load</code> event.</li>
+      </ul>
+    </p>
+
+    <p><a href="https://proxy-throttle.deno.dev/?factor=0.2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-script-async%2F" target="_blank"><button>Open example</button></a></p>
+
+    <details>
+      <summary>HTML outline</summary>
+      <pre>
+&lt;head&gt;
+  &lt;link rel="stylesheet" href="./assets/new.css" data-throttle="1"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;script async src="./assets/junk.js#async1" data-throttle="5"&gt;&lt;/script&gt;
+  &lt;script async src="./assets/fib.js#async2" data-throttle="0" data-fibonacci-number="42"&gt;&lt;/script&gt;
+  &lt;script async src="./assets/junk.js#async3" data-throttle="1"&gt;&lt;/script&gt;
+  &lt;!-- Long HTML contents --&gt;
+&lt;/body&gt;</pre>
+    </details>
+
+    <details>
+      <summary>Timeline</summary>
+      <figure>
+        <pre></pre>
+        <figcaption>
+          Timeline: It shows two deferred scripts that start to download as the document parses. The document parsing ends and It reaches the <em>interactive</em> state. The first deferred script takes 5s to download and the second takes 2s. They need to wait for the style download to end. Then both get executed in order. Finally <code>DOMContentLoaded</code> is fired. The rendering is hold by the style download, not the scripts. Without the external style, rendering would take place almost immediately.
+        </figcaption>
+    </figure>
+    </details>
+
+    <p>[<a href="#toc">TOP</a>]</p>
+  </article>
+
 
 
 </body>

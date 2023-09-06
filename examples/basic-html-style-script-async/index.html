@@ -6,13 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Learn how a web page loads by example">
   <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
-  <link rel="stylesheet" href="https://proxy-throttle.deno.dev?factor=10&url=https://esroyo.github.io/pageload-examples/assets/new.css">
+  <link rel="stylesheet" href="https://proxy-throttle.deno.dev?factor=1&url=https://esroyo.github.io/pageload-examples/assets/new.css">
 </head>
 <body>
 
-  <script defer src="https://proxy-throttle.deno.dev?factor=5&url=https://esroyo.github.io/pageload-examples/assets/junk.js#def1" data-message=" -- deferred 1"></script>
+  <script async src="https://proxy-throttle.deno.dev?factor=5&url=https://esroyo.github.io/pageload-examples/assets/junk.js#async1" data-message=" -- async 1"></script>
 
-  <script defer src="https://proxy-throttle.deno.dev?factor=2&url=https://esroyo.github.io/pageload-examples/assets/junk.js#def2" data-message=" -- deferred 2"></script>
+  <script async src="https://proxy-throttle.deno.dev?factor=0&url=https://esroyo.github.io/pageload-examples/assets/fib.js#async2" data-fibonacci-number="42" data-message=" -- async 2"></script>
+
+  <script async src="https://proxy-throttle.deno.dev?factor=1&url=https://esroyo.github.io/pageload-examples/assets/junk.js#async3" data-message=" -- async 3"></script>
 
   <header>
     <h1>🌍&nbsp; Page loading</h1>
