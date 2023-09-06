@@ -23,6 +23,7 @@
       <li><a href="#basic-html-script">Scripts block document parsing, but not rendering</a></li>
       <li><a href="#basic-html-style-script">Scripts execution requires to finish any ongoing styles loading</a></li>
       <li><a href="#basic-html-style-script-defer">Deferred scripts don't block document parsing</a></li>
+      <li><a href="#basic-html-style-script-async">Async scripts block (almost) nothing</a></li>
     </ul>
   </details>  
 
@@ -575,9 +576,58 @@
     <details>
       <summary>Timeline</summary>
       <figure>
-        <pre></pre>
+        <pre>
+       0.00 ┬ startTime
+      18.40 ├ requestStart
+            ┊
+     363.10 ├ responseStart
+     454.70 ├ resourceStart: link("…mples/assets/new.css")
+     455.30 ├ resourceStart: script("…ssets/junk.js#async1")
+     455.70 ├ resourceStart: script("…assets/fib.js#async2")
+     455.80 ├ resourceStart: script("…ssets/junk.js#async3")
+            ┊
+     647.30 ├ resourceEnd: script("…assets/fib.js#async2")
+     649.30 ├ mark: script execution -- async 2
+     649.40 ├ mark: start fib(42)
+            ┊
+            ┊
+            ┊
+            ┊
+    1592.20 ├ resourceEnd: link("…mples/assets/new.css")
+    1592.60 ├ responseEnd
+    1629.00 ├ resourceEnd: script("…ssets/junk.js#async3")
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+    2834.70 ├ mark: end fib(42)
+    2842.30 ├ domInteractive
+    2842.30 ├ domContentLoadedEventStart
+    2842.30 ├ domContentLoadedEventEnd
+    2851.60 ├ mark: script execution -- async 3
+    2926.30 ├ paint: first-paint
+    2926.30 ├ paint: first-contentful-paint
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+    5893.70 ├ resourceEnd: script("…ssets/junk.js#async1")
+    5894.80 ├ mark: script execution -- async 1
+    5894.90 ├ domComplete
+    5894.90 ├ loadEventStart
+    5894.90 └ loadEventEnd</pre>
         <figcaption>
-          Timeline: It shows two deferred scripts that start to download as the document parses. The document parsing ends and It reaches the <em>interactive</em> state. The first deferred script takes 5s to download and the second takes 2s. They need to wait for the style download to end. Then both get executed in order. Finally <code>DOMContentLoaded</code> is fired. The rendering is hold by the style download, not the scripts. Without the external style, rendering would take place almost immediately.
+          Timeline: It shows that four external resources start loading (one style, three async scripts) while the document is being received and parsed. The 2nd async script is the first to end its download. At this point none of the other external resources, nor the document itself have been completely received yet. Execution of this 2nd async script starts and takes a while &mdash; around 2seconds, a very looong task! While this script is executing, three other resources have finished arriving (the style, the document itself, and the 3rd async script). They can't be processed while the 2nd script is executing. When the execution of the 2nd script ends, we are unblocked to continue processing stuff. The style is processed. The rest of the document is parsed and reaches the interactive state. And the 3rd async script gets executed. Finally some rendering happens. Much later, the 1st async script ends its download and executes. Only then the <code>load</code> event fires.
         </figcaption>
     </figure>
     </details>
