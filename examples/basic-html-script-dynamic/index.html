@@ -6,17 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Learn how a web page loads by example">
   <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
-  <script async src="https://proxy-throttle.deno.dev?factor=0&url=https://esroyo.github.io/pageload-examples/assets/junk.js#async1" defer data-message=" -- async 1"></script>
+  <script async src="https://proxy-throttle.deno.dev?factor=0&url=https://esroyo.github.io/pageload-examples/assets/junk.js?async1" defer data-message=" -- async 1"></script>
 </head>
 <body>
 
-  <script async src="https://proxy-throttle.deno.dev?factor=9&url=https://esroyo.github.io/pageload-examples/assets/junk.js#async2" defer data-message=" -- async 2"></script>
+  <script async src="https://proxy-throttle.deno.dev?factor=9&url=https://esroyo.github.io/pageload-examples/assets/junk.js?async2" defer data-message=" -- async 2"></script>
 
   <script>
     performance.mark('script execution -- sync 1');
     var script = document.createElement("script");
     script.async = true;
-    script.src = "https://proxy-throttle.deno.dev?factor=5&url=https://esroyo.github.io/pageload-examples/assets/junk.js#dyn-async-1";
+    script.src = "https://proxy-throttle.deno.dev?factor=5&url=https://esroyo.github.io/pageload-examples/assets/junk.js?dyn-async-1";
     script.dataset.message = " -- dynamic async 1";
     document.body.append(script);
   </script>
@@ -25,31 +25,31 @@
     performance.mark('script execution -- sync 2');
     var script = document.createElement("script");
     script.async = true;
-    script.src = "https://proxy-throttle.deno.dev?factor=11&url=https://esroyo.github.io/pageload-examples/assets/junk.js#dyn-async-2";
+    script.src = "https://proxy-throttle.deno.dev?factor=11&url=https://esroyo.github.io/pageload-examples/assets/junk.js?dyn-async-2";
     script.dataset.message = " -- dynamic async 2";
     script.onload = () => {
       performance.mark('callback execution -- onload dynamic async 2');
       var script = document.createElement("script");
       script.async = true;
-      script.src = "https://proxy-throttle.deno.dev?factor=3&url=https://esroyo.github.io/pageload-examples/assets/junk.js#dyn-async-3";
+      script.src = "https://proxy-throttle.deno.dev?factor=3&url=https://esroyo.github.io/pageload-examples/assets/junk.js?dyn-async-3";
       script.dataset.message = " -- dynamic async 3";
       document.body.prepend(script);
     };
     document.body.append(script);
   </script>
 
-  <script src="https://proxy-throttle.deno.dev?factor=6&url=https://esroyo.github.io/pageload-examples/assets/junk.js#def1" defer data-message=" -- deferred 1"></script>
+  <script src="https://proxy-throttle.deno.dev?factor=6&url=https://esroyo.github.io/pageload-examples/assets/junk.js?def1" defer data-message=" -- deferred 1"></script>
 
   <script>
     performance.mark('script execution -- sync 3');
     var script = document.createElement("script");
     script.async = false;
-    script.src = "https://proxy-throttle.deno.dev?factor=6&url=https://esroyo.github.io/pageload-examples/assets/junk.js#dyn-sync-1";
+    script.src = "https://proxy-throttle.deno.dev?factor=7&url=https://esroyo.github.io/pageload-examples/assets/junk.js?dyn-sync-1";
     script.dataset.message = " -- dynamic sync 1";
     document.body.append(script);
   </script>
 
-  <script src="https://proxy-throttle.deno.dev?factor=4&url=https://esroyo.github.io/pageload-examples/assets/junk.js#def2" defer data-message=" -- deferred 2"></script>
+  <script src="https://proxy-throttle.deno.dev?factor=4&url=https://esroyo.github.io/pageload-examples/assets/junk.js?def2" defer data-message=" -- deferred 2"></script>
 
   <header>
     <h1>🌍&nbsp; Page loading</h1>
@@ -185,7 +185,7 @@
     performance.mark('script execution -- sync 4');
     var script = document.createElement("script");
     script.async = false;
-    script.src = "https://proxy-throttle.deno.dev?factor=2&url=https://esroyo.github.io/pageload-examples/assets/junk.js#dyn-sync-2";
+    script.src = "https://proxy-throttle.deno.dev?factor=2&url=https://esroyo.github.io/pageload-examples/assets/junk.js?dyn-sync-2";
     script.dataset.message = " -- dynamic sync 2";
     document.body.prepend(script);
   </script>
