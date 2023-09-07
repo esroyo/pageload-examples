@@ -53,11 +53,13 @@
     <details>
       <summary>HTML outline</summary>
       <pre>
-&lt;html data-throttle="5"&gt;
+&lt;html throttle="5"&gt;
   &lt;head&gt;
   &lt;/head&gt;
   &lt;body&gt;
+
     &lt;!-- Long HTML contents --&gt;
+
   &lt;/body&gt;
 &lt;/html&gt;</pre>
     </details>
@@ -104,11 +106,16 @@
   <article id="basic-html-style">
     <h2>📝 External styles block rendering, but not document parsing</h2>
     <p>As we have seen in the previous example, the DOM content tree is gradually builded as the HTML is downloaded. What if we have an stylesheet link on that page?</p>
-    <p>An external stylesheet by itself does not block <em>all</em> of the process. The fetching of the stylesheet starts, but the HTML parsing continues. The <code>DOMContentLoaded</code> event will trigger regardless the fetching of the style state.</p>
+
+    <p>An external stylesheet by itself does not block <em>all</em> of the process. The fetching of the stylesheet starts, but the HTML parsing continues. The <code>DOMContentLoaded</code> event will trigger regardless the style state.</p>
 
     <p><em>However</em>, although the <code>DOMContentLoaded</code> event fires, <strong>the page won't be displayed to the user</strong> until the fetching of the style is done.</p>
 
-    <p>This means an stylesheet resource doesn't block the document parsing, but will block the rendering.</p>
+    <p>This means an stylesheet resource doesn't block the document parsing, but will block the rendering. From JavaScript land It feels strange to have no visual feedback when <code>DOMContentLoaded</code> has already fired. There seems to be no way to force the browser into the first paint.</p>
+
+    <p>If an style is added dynamically from JavaScript, It won't block the rendering. Even if that is done <em>before</em> the first render.</p>
+
+    <p>While there are pending styles to download and parse, the window `load` will not fire. No matter how late they have been added to the DOM.</p>
 
     <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style/" target="_blank"><button>Open example</button></a>
@@ -118,10 +125,12 @@
       <summary>HTML outline</summary>
       <pre>
 &lt;head&gt;
-  &lt;link rel="stylesheet" href="./assets/new.css" data-throttle="10"&gt;
+  &lt;link rel="stylesheet" href="./assets/new.css" throttle="10"&gt;
 &lt;/head&gt;
 &lt;body&gt;
+
   &lt;!-- Long HTML contents --&gt;
+
 &lt;/body&gt;</pre>
     </details>
 
@@ -196,7 +205,9 @@
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
+
   &lt;!-- Long HTML contents --&gt;
+
 &lt;/body&gt;</pre>
     </details>
 
@@ -260,14 +271,16 @@
       <summary>HTML outline</summary>
       <pre>
 &lt;head&gt;
-  &lt;link rel="preload" as="style" href="./assets/new.css" data-throttle="15"&gt;
+  &lt;link rel="preload" as="style" href="./assets/new.css" throttle="15"&gt;
   &lt;style&gt;
     /* Limited critical CSS */
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
+
   &lt;!-- Long HTML contents --&gt;
-  &lt;link rel="stylesheet" href="./assets/new.css" data-throttle="15"&gt;
+
+  &lt;link rel="stylesheet" href="./assets/new.css" throttle="15"&gt;
 &lt;/body&gt;</pre>
     </details>
 
@@ -329,8 +342,10 @@
 &lt;head&gt;
 &lt;/head&gt;
 &lt;body&gt;
+
   &lt;!-- Long HTML contents --&gt;
-  &lt;script src="./assets/junk.js" data-throttle="10"&gt;&lt;/script&gt;
+
+  &lt;script src="./assets/junk.js" throttle="10"&gt;&lt;/script&gt;
 &lt;/body&gt;</pre>
     </details>
 
@@ -391,7 +406,7 @@
 
     <p>Note we emphasize the fact that only <em>ongoing</em> loading styles will block the script. If the order is inverted and the script is placed before the style, It will get executed immediately. See that in <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-script-style/" target="_blank">this secondary example</a> (timeline will be similar to the <a href="#basic-html-style">second case</a>).</p>
 
-    <p><strong>This rule only applies to <em>initial</em> styles</strong>. That is to stylesheet links that are in the initial HTML response. Stylesheet links added dynamically do not block successive scripts, even if they are added to the document before script.</p>
+    <p><strong>This rule only applies to <em>initial</em> styles</strong>. That is to stylesheet links that are in the initial HTML response. Stylesheet links added dynamically do not block successive scripts, even if they are added to the document before those scripts.</p>
 
     <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script/" target="_blank"><button>Open example</button></a>
@@ -401,10 +416,12 @@
       <summary>HTML outline</summary>
       <pre>
 &lt;head&gt;
-  &lt;link rel="stylesheet" href="./assets/new.css" data-throttle="10"&gt;
+  &lt;link rel="stylesheet" href="./assets/new.css" throttle="10"&gt;
 &lt;/head&gt;
 &lt;body&gt;
+
   &lt;!-- Long HTML contents --&gt;
+
   &lt;script&gt;
     performance.mark('script execution');
   &lt;/script&gt;
@@ -478,12 +495,14 @@
       <summary>HTML outline</summary>
       <pre>
 &lt;head&gt;
-  &lt;link rel="stylesheet" href="./assets/new.css" data-throttle="10"&gt;
+  &lt;link rel="stylesheet" href="./assets/new.css" throttle="10"&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;script src="./assets/junk.js#def1" defer data-throttle="5"&gt;&lt;/script&gt;
-  &lt;script src="./assets/junk.js#def2" defer data-throttle="2"&gt;&lt;/script&gt;
+  &lt;script src="./assets/junk.js#def1" defer throttle="5"&gt;&lt;/script&gt;
+  &lt;script src="./assets/junk.js#def2" defer throttle="2"&gt;&lt;/script&gt;
+
   &lt;!-- Long HTML contents --&gt;
+
 &lt;/body&gt;</pre>
     </details>
 
@@ -563,13 +582,15 @@
       <summary>HTML outline</summary>
       <pre>
 &lt;head&gt;
-  &lt;link rel="stylesheet" href="./assets/new.css" data-throttle="1"&gt;
+  &lt;link rel="stylesheet" href="./assets/new.css" throttle="1"&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;script async src="./assets/junk.js#async1" data-throttle="5"&gt;&lt;/script&gt;
-  &lt;script async src="./assets/fib.js#async2" data-throttle="0" data-fibonacci-number="42"&gt;&lt;/script&gt;
-  &lt;script async src="./assets/junk.js#async3" data-throttle="1"&gt;&lt;/script&gt;
+  &lt;script async src="./assets/junk.js#async1" throttle="5"&gt;&lt;/script&gt;
+  &lt;script async src="./assets/fib.js#async2" throttle="0" data-fibonacci-number="42"&gt;&lt;/script&gt;
+  &lt;script async src="./assets/junk.js#async3" throttle="1"&gt;&lt;/script&gt;
+
   &lt;!-- Long HTML contents --&gt;
+
 &lt;/body&gt;</pre>
     </details>
 
@@ -640,17 +661,149 @@
   <article id="basic-html-script-dynamic">
     <h2>📝 Dynamic scripts</h2>
 
+    <p>We consider dynamic scripts those that are created using JavaScript (and added to the DOM). This can be done at any time, there is no restriction.</p>
+
+    <p>There are two types of dynamic scripts: async (the default), or sync. There is no way to create a dynamic script that mimics the <code>defer</code> behaviour (makes no sense really).</p>
+
+    <p>They don't block document parsing, even if they are sync and are added before the document is <em>interactive</em>.</p>
+
+    <p>Dynamic sync scripts block each other. They execute in the order they were added to document (the insertion position is irrelevant).</p>
+
+    <p>Dynamic async scripts behave exactly as non-dynamic async scripts: they almost block nothing, and get executed as soon as they are ready.</p>
+
+    <p>In fact any dynamic script may execute in the middle of critical processes like document parsing. It is important to keep your eyes open.</p>
+
+    <p>Finally, they do block the window <code>load</code> event. This is true for <em>every</em> dynamic script (async or sync), disregarding <strong>when they are added to the document</strong>. If they are added before <code>load</code> has fired, the event will be holded until the pending scripts execute.<p>
+
     <p><a href="https://proxy-throttle.deno.dev/?factor=0.4&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-script-dynamic%2F" target="_blank"><button>Open example</button></a></p>
 
     <details>
       <summary>HTML outline</summary>
-      <pre></pre>
+      <pre>
+&lt;head&gt;
+  &lt;script async src="./assets/junk.js?async1" throttle="0"&gt;</script>
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;script async src="./assets/junk.js?async2" throttle="9"&gt;</script>
+  &lt;script&gt;
+    // mark: script execution -- inline 1
+    // Adds a dynamic script async "?dyn-async1" throttle=5
+  &lt;/script&gt;
+  &lt;script&gt;
+    // mark: script execution -- inline 2
+    // Adds a dynamic script async "?dyn-async2" throttle=11
+    // onload of "?dyn-async2":
+    //   Adds a dynamic script async "?dyn-async3" throttle=3
+  &lt;/script&gt;
+  &lt;script defer src="./assets/junk.js?def1" throttle="6"&gt;</script>
+  &lt;script&gt;
+    // mark: script execution -- inline 3
+    // Adds a dynamic script sync "?dyn-sync1" throttle=7
+  &lt;/script&gt;
+  &lt;script defer src="./assets/junk.js?def2" throttle="4"&gt;</script>
+
+  &lt;!-- Long HTML contents --&gt;
+
+  &lt;script&gt;
+    // mark: script execution -- inline 4
+    // Adds a dynamic script sync "?dyn-sync2" throttle=2
+  &lt;/script&gt;
+&lt;/body&gt;</pre>
     </details>
 
     <details>
       <summary>Timeline</summary>
       <figure>
-        <pre></pre>
+        <pre>
+       0.00 ┬ startTime
+      51.60 ├ requestStart
+            ┊
+     311.70 ├ responseStart
+     452.80 ├ resourceStart: script("…ssets/junk.js?async1")
+     453.40 ├ resourceStart: script("…ssets/junk.js?async2")
+     453.90 ├ resourceStart: script("…/assets/junk.js?def1")
+     454.00 ├ resourceStart: script("…/assets/junk.js?def2")
+     456.50 ├ mark: script execution -- inline 1
+     457.50 ├ resourceStart: script("…/junk.js?dyn-async-1")
+     458.00 ├ mark: script execution -- inline 2
+     458.10 ├ resourceStart: script("…/junk.js?dyn-async-2")
+     458.60 ├ mark: script execution -- inline 3
+     458.70 ├ resourceStart: script("…s/junk.js?dyn-sync-1")
+     499.90 ├ paint: first-paint
+     499.90 ├ paint: first-contentful-paint
+     632.80 ├ resourceEnd: script("…ssets/junk.js?async1")
+     634.30 ├ mark: script execution -- async 1
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+    2859.50 ├ mark: script execution -- inline 4
+    2859.90 ├ resourceStart: script("…s/junk.js?dyn-sync-2")
+            ┊
+    3055.20 ├ responseEnd
+    3056.20 ├ domInteractive
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+    4919.20 ├ resourceEnd: script("…/assets/junk.js?def2")
+    4920.40 ├ resourceEnd: script("…s/junk.js?dyn-sync-2")
+            ┊
+            ┊
+            ┊
+    5841.00 ├ resourceEnd: script("…/junk.js?dyn-async-1")
+    5843.10 ├ mark: script execution -- dynamic async 1
+            ┊
+            ┊
+            ┊
+    6763.00 ├ resourceEnd: script("…/assets/junk.js?def1")
+    6764.70 ├ mark: script execution -- deferred 1
+    6765.00 ├ mark: script execution -- deferred 2
+    6765.00 ├ domContentLoadedEventStart
+    6765.10 ├ domContentLoadedEventEnd
+            ┊
+            ┊
+            ┊
+    7685.40 ├ resourceEnd: script("…s/junk.js?dyn-sync-1")
+    7687.20 ├ mark: script execution -- dynamic sync 1
+    7687.50 ├ mark: script execution -- dynamic sync 2
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+   10141.20 ├ resourceEnd: script("…ssets/junk.js?async2")
+   10143.00 ├ mark: script execution -- async 2
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+   11679.10 ├ resourceEnd: script("…/junk.js?dyn-async-2")
+   11680.90 ├ mark: script execution -- dynamic async 2
+   11681.60 ├ mark: callback execution -- onload dynamic async 2
+   11682.30 ├ resourceStart: script("…/junk.js?dyn-async-3")
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+            ┊
+   14720.70 ├ resourceEnd: script("…/junk.js?dyn-async-3")
+   14722.40 ├ mark: script execution -- dynamic async 3
+   14722.60 ├ domComplete
+   14722.70 ├ loadEventStart
+   14722.80 └ loadEventEnd</pre>
         <figcaption>
         </figcaption>
     </figure>

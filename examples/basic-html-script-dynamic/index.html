@@ -6,14 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Learn how a web page loads by example">
   <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
-  <script async src="https://proxy-throttle.deno.dev?factor=0&url=https://esroyo.github.io/pageload-examples/assets/junk.js?async1" defer data-message=" -- async 1"></script>
+  <script async src="https://proxy-throttle.deno.dev?factor=0&url=https://esroyo.github.io/pageload-examples/assets/junk.js?async1" data-message=" -- async 1"></script>
 </head>
 <body>
 
-  <script async src="https://proxy-throttle.deno.dev?factor=9&url=https://esroyo.github.io/pageload-examples/assets/junk.js?async2" defer data-message=" -- async 2"></script>
+  <script async src="https://proxy-throttle.deno.dev?factor=9&url=https://esroyo.github.io/pageload-examples/assets/junk.js?async2" data-message=" -- async 2"></script>
 
   <script>
-    performance.mark('script execution -- sync 1');
+    performance.mark('script execution -- inline 1');
     var script = document.createElement("script");
     script.async = true;
     script.src = "https://proxy-throttle.deno.dev?factor=5&url=https://esroyo.github.io/pageload-examples/assets/junk.js?dyn-async-1";
@@ -22,7 +22,7 @@
   </script>
 
   <script>
-    performance.mark('script execution -- sync 2');
+    performance.mark('script execution -- inline 2');
     var script = document.createElement("script");
     script.async = true;
     script.src = "https://proxy-throttle.deno.dev?factor=11&url=https://esroyo.github.io/pageload-examples/assets/junk.js?dyn-async-2";
@@ -38,10 +38,10 @@
     document.body.append(script);
   </script>
 
-  <script src="https://proxy-throttle.deno.dev?factor=6&url=https://esroyo.github.io/pageload-examples/assets/junk.js?def1" defer data-message=" -- deferred 1"></script>
+  <script defer src="https://proxy-throttle.deno.dev?factor=6&url=https://esroyo.github.io/pageload-examples/assets/junk.js?def1" data-message=" -- deferred 1"></script>
 
   <script>
-    performance.mark('script execution -- sync 3');
+    performance.mark('script execution -- inline 3');
     var script = document.createElement("script");
     script.async = false;
     script.src = "https://proxy-throttle.deno.dev?factor=7&url=https://esroyo.github.io/pageload-examples/assets/junk.js?dyn-sync-1";
@@ -49,7 +49,7 @@
     document.body.append(script);
   </script>
 
-  <script src="https://proxy-throttle.deno.dev?factor=4&url=https://esroyo.github.io/pageload-examples/assets/junk.js?def2" defer data-message=" -- deferred 2"></script>
+  <script defer src="https://proxy-throttle.deno.dev?factor=4&url=https://esroyo.github.io/pageload-examples/assets/junk.js?def2" data-message=" -- deferred 2"></script>
 
   <header>
     <h1>🌍&nbsp; Page loading</h1>
@@ -182,7 +182,7 @@
   </article>
 
   <script>
-    performance.mark('script execution -- sync 4');
+    performance.mark('script execution -- inline 4');
     var script = document.createElement("script");
     script.async = false;
     script.src = "https://proxy-throttle.deno.dev?factor=2&url=https://esroyo.github.io/pageload-examples/assets/junk.js?dyn-sync-2";
