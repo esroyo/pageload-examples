@@ -267,6 +267,8 @@
 
     <p><a href="https://proxy-throttle.deno.dev/?factor=2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-critical-blink%2F" target="_blank">This secondary example</a> shows the alternative for Blink (using the <code>onload</code> attribute).</p>
 
+    <p>On a more general note, be aware of abusing preloading. On HTTP/1.1 you can easily hit the number of concurrent connections to the same domain (6 in Chrome). Aside from that, remember that you are hand-picking high priority resources. That implicitly de-prioritizes other resources.</p>
+
     <p>
     <a href="https://proxy-throttle.deno.dev/?factor=2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-critical%2F" target="_blank"><button>Open example</button></a>
     </p>
@@ -491,6 +493,8 @@
     <p>They are all executed at the same time, before <code>DOMContentLoaded</code>. Therefore all deferred scripts need to be completely downloaded before any of them can execute.</p>
 
     <p>Roughtly we can think of deferred scripts as synchronous scripts whose execution is pushed towards the end of the document parsing process, with the benefit of prefetching them.</p>
+
+    <p>As a side note, scripts of <code>type=module</code> behave like deferred scripts. They keep order, execute once the document is interative, wait for styles, etc. The most notable difference is that they probably get higher download priority. Also they won't have access to <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/currentScript" target="_blank">document.currentScript</a>.</p>
 
     <p><a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-defer/" target="_blank"><button>Open example</button></a></p>
 
