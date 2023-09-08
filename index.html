@@ -7,6 +7,7 @@
   <meta name="description" content="Learn how a web page loads by example">
   <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
   <link rel="stylesheet" href="./assets/new.css">
+	<script defer src="./assets/microlight.js"></script>
 </head>
 <body>
   <header>
@@ -24,6 +25,7 @@
       <li><a href="#basic-html-style-script">Scripts execution requires to finish any ongoing styles loading</a></li>
       <li><a href="#basic-html-style-script-defer">Deferred scripts don't block document parsing</a></li>
       <li><a href="#basic-html-style-script-async">Async scripts block (almost) nothing</a></li>
+      <li><a href="#basic-html-script-dynamic">Dynamic scripts behave like async by default</a></li>
     </ul>
   </details>  
 
@@ -52,8 +54,7 @@
 
     <details>
       <summary>HTML outline</summary>
-      <pre>
-&lt;html throttle="5"&gt;
+      <pre><code>&lt;html throttle="5"&gt;
   &lt;head&gt;
   &lt;/head&gt;
   &lt;body&gt;
@@ -61,38 +62,38 @@
     &lt;!-- Long HTML contents --&gt;
 
   &lt;/body&gt;
-&lt;/html&gt;</pre>
+&lt;/html&gt;</code></pre>
     </details>
 
     <details>
       <summary>Timeline</summary>
       <figure>
         <pre>
-       0.00 ┬ startTime
-     136.60 ├ requestStart
-     373.20 ├ responseStart
-            ┊
-    3213.90 ├ paint: first-paint
-    3213.90 ├ paint: first-contentful-paint
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-   30480.60 ├ responseEnd
-   30482.00 ├ domInteractive
-   30482.00 ├ domContentLoadedEventStart
-   30482.00 ├ domContentLoadedEventEnd
-   30482.40 ├ domComplete
-   30482.50 ├ loadEventStart
-   30482.50 └ loadEventEnd</pre>
-        <figcaption>
+       0.00 <span style="opacity:.5">┬</span> startTime
+      18.10 <span style="opacity:.5">├</span> requestStart
+     171.60 <span style="opacity:.5">├</span> responseStart
+            <span style="opacity:.5">┊</span>
+    2925.30 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-paint</span>
+    2925.30 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-contentful-paint</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+   30235.70 <span style="opacity:.5">├</span> responseEnd
+   30236.70 <span style="opacity:.5">├</span> domInteractive
+   30236.80 <span style="opacity:.5">├</span> domContentLoadedEventStart
+   30236.80 <span style="opacity:.5">├</span> domContentLoadedEventEnd
+   30237.10 <span style="opacity:.5">├</span> domComplete
+   30237.20 <span style="opacity:.5">├</span> loadEventStart
+   30237.20 <span style="opacity:.5">└</span> loadEventEnd</pre>
+       <figcaption>
           Timeline: It shows the first paint happening much earlier than the HTML's response end.
         </figcaption>
       </figure>
@@ -123,49 +124,49 @@
 
     <details>
       <summary>HTML outline</summary>
-      <pre>
-&lt;head&gt;
+      <pre><code>&lt;head&gt;
   &lt;link rel="stylesheet" href="./assets/new.css" throttle="10"&gt;
 &lt;/head&gt;
 &lt;body&gt;
 
   &lt;!-- Long HTML contents --&gt;
 
-&lt;/body&gt;</pre>
+&lt;/body&gt;</code></pre>
     </details>
 
     <details>
       <summary>Timeline</summary>
       <figure>
         <pre>
-       0.00 ┬ startTime
-      83.90 ├ requestStart
-     272.10 ├ responseStart
-     274.30 ├ responseEnd
-     280.10 ├ resourceStart: link("…mples/assets/new.css")
-     287.80 ├ domInteractive
-     287.80 ├ domContentLoadedEventStart
-     287.80 ├ domContentLoadedEventEnd
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-   10559.70 ├ resourceEnd: link("…mples/assets/new.css")
-   10692.60 ├ domComplete
-   10692.60 ├ loadEventStart
-   10692.60 ├ loadEventEnd
-   10833.80 ├ paint: first-paint
-   10833.80 └ paint: first-contentful-paint</pre>
-        <figcaption>
+       0.00 <span style="opacity:.5">┬</span> startTime
+      27.90 <span style="opacity:.5">├</span> requestStart
+     174.90 <span style="opacity:.5">├</span> responseStart
+     177.90 <span style="opacity:.5">├</span> responseEnd
+     184.30 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+     194.10 <span style="opacity:.5">├</span> domInteractive
+     194.10 <span style="opacity:.5">├</span> domContentLoadedEventStart
+     194.20 <span style="opacity:.5">├</span> domContentLoadedEventEnd
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+   10472.40 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+   10525.70 <span style="opacity:.5">├</span> domComplete
+   10525.80 <span style="opacity:.5">├</span> loadEventStart
+   10525.90 <span style="opacity:.5">├</span> loadEventEnd
+   10600.20 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-paint</span>
+   10600.20 <span style="opacity:.5">└</span> paint: <span style="opacity:.6">first-contentful-paint</span></pre>
+      <figcaption>
           Timeline: It shows that an external style link does not block the document parsing nor the <code>DOMContentLoaded</code> event. However the first paint won't happen until the download and processing of the style resource ends. 
         </figcaption>
     </figure>
@@ -198,8 +199,7 @@
 
     <details>
       <summary>HTML outline</summary>
-      <pre>
-&lt;head&gt;
+      <pre><code>&lt;head&gt;
   &lt;style&gt;
     /* Inlined CSS */
   &lt;/style&gt;
@@ -208,37 +208,37 @@
 
   &lt;!-- Long HTML contents --&gt;
 
-&lt;/body&gt;</pre>
+&lt;/body&gt;</code></pre>
     </details>
 
     <details>
       <summary>Timeline</summary>
       <figure>
         <pre>
-       0.00 ┬ startTime
-      13.20 ├ requestStart
-     245.40 ├ responseStart
-            ┊
-    3264.70 ├ paint: first-paint
-    3264.70 ├ paint: first-contentful-paint
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-   35206.40 ├ responseEnd
-   35207.00 ├ domInteractive
-   35207.00 ├ domContentLoadedEventStart
-   35207.00 ├ domContentLoadedEventEnd
-   35207.20 ├ domComplete
-   35207.30 ├ loadEventStart
-   35207.30 └ loadEventEnd</pre>
+       0.00 <span style="opacity:.5">┬</span> startTime
+      19.60 <span style="opacity:.5">├</span> requestStart
+     539.10 <span style="opacity:.5">├</span> responseStart
+            <span style="opacity:.5">┊</span>
+    3240.20 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-paint</span>
+    3240.20 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-contentful-paint</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+   35312.40 <span style="opacity:.5">├</span> responseEnd
+   35313.20 <span style="opacity:.5">├</span> domInteractive
+   35313.20 <span style="opacity:.5">├</span> domContentLoadedEventStart
+   35313.20 <span style="opacity:.5">├</span> domContentLoadedEventEnd
+   35313.40 <span style="opacity:.5">├</span> domComplete
+   35313.40 <span style="opacity:.5">├</span> loadEventStart
+   35313.40 <span style="opacity:.5">└</span> loadEventEnd</pre>
         <figcaption>
           Timeline: It shows an early painting, given there are no external resources.
         </figcaption>
@@ -269,8 +269,7 @@
 
     <details>
       <summary>HTML outline</summary>
-      <pre>
-&lt;head&gt;
+      <pre><code>&lt;head&gt;
   &lt;link rel="preload" as="style" href="./assets/new.css" throttle="15"&gt;
   &lt;style&gt;
     /* Limited critical CSS */
@@ -281,38 +280,39 @@
   &lt;!-- Long HTML contents --&gt;
 
   &lt;link rel="stylesheet" href="./assets/new.css" throttle="15"&gt;
-&lt;/body&gt;</pre>
+&lt;/body&gt;</code></pre>
     </details>
 
     <details>
       <summary>Timeline</summary>
       <figure>
         <pre>
-       0.00 ┬ startTime
-      84.00 ├ requestStart
-            ┊
-            ┊
-    3226.00 ├ responseStart
-    3275.00 ├ resourceStart: link("…mples/assets/new.css")
-    3313.00 ├ paint: first-contentful-paint
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-   12443.00 ├ responseEnd
-   12445.00 ├ domInteractive
-   12445.00 ├ domContentLoadedEventStart
-   12445.00 ├ domContentLoadedEventEnd
-            ┊
-            ┊
-            ┊
-            ┊
-   18586.00 ├ resourceEnd: link("…mples/assets/new.css")
-   18779.00 ├ domComplete
-   18779.00 ├ loadEventStart
-   18779.00 └ loadEventEnd</pre>
+       0.00 <span style="opacity:.5">┬</span> startTime
+      83.00 <span style="opacity:.5">├</span> requestStart
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    8135.00 <span style="opacity:.5">├</span> responseStart
+    8199.00 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+    8224.00 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-contentful-paint</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+   17041.00 <span style="opacity:.5">├</span> responseEnd
+   17056.00 <span style="opacity:.5">├</span> domInteractive
+   17056.00 <span style="opacity:.5">├</span> domContentLoadedEventStart
+   17056.00 <span style="opacity:.5">├</span> domContentLoadedEventEnd
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+   23495.00 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+   23667.00 <span style="opacity:.5">├</span> domComplete
+   23667.00 <span style="opacity:.5">├</span> loadEventStart
+   23667.00 <span style="opacity:.5">└</span> loadEventEnd</pre>
         <figcaption>
           Timeline: It shows an early paint. Contents are displayed as they arrive, styled with the critical inlined styles. Meanwhile non-critical styles are being preloaded and won't block anything. Once the non-critical styles are downloaded the styles are applied (reflow). This sequence of events is taken from a WebKit based browser.
         </figcaption>
@@ -338,51 +338,49 @@
 
     <details>
       <summary>HTML outline</summary>
-      <pre>
-&lt;head&gt;
+      <pre><code>&lt;head&gt;
 &lt;/head&gt;
 &lt;body&gt;
 
   &lt;!-- Long HTML contents --&gt;
 
   &lt;script src="./assets/junk.js" throttle="10"&gt;&lt;/script&gt;
-&lt;/body&gt;</pre>
+&lt;/body&gt;</code></pre>
     </details>
 
     <details>
       <summary>Timeline</summary>
       <figure>
         <pre>
-       0.00 ┬ startTime
-      12.90 ├ requestStart
-      14.20 ├ responseStart
-      16.50 ├ responseEnd
-      20.20 ├ resourceStart: script("…mples/assets/junk.js")
-      62.10 ├ paint: first-paint
-      62.10 ├ paint: first-contentful-paint
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-   10395.70 ├ resourceEnd: script("…mples/assets/junk.js")
-   10397.10 ├ mark: script execution
-   10402.50 ├ domInteractive
-   10402.60 ├ domContentLoadedEventStart
-   10402.60 ├ domContentLoadedEventEnd
-   10420.10 ├ domComplete
-   10420.20 ├ loadEventStart
-   10420.20 └ loadEventEnd</pre>
+       0.00 <span style="opacity:.5">┬</span> startTime
+      25.20 <span style="opacity:.5">├</span> requestStart
+     174.00 <span style="opacity:.5">├</span> responseStart
+     177.90 <span style="opacity:.5">├</span> responseEnd
+     184.80 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…mples/assets/junk.js")</span>
+     247.70 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-paint</span>
+     247.70 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-contentful-paint</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+   10471.40 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…mples/assets/junk.js")</span>
+   10473.40 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution</span>
+   10478.60 <span style="opacity:.5">├</span> domInteractive
+   10478.70 <span style="opacity:.5">├</span> domContentLoadedEventStart
+   10478.70 <span style="opacity:.5">├</span> domContentLoadedEventEnd
+   10641.20 <span style="opacity:.5">├</span> domComplete
+   10641.30 <span style="opacity:.5">├</span> loadEventStart
+   10641.30 <span style="opacity:.5">└</span> loadEventEnd</pre>
         <figcaption>
           Timeline: It shows that an external script blocks document parsing. Interactive state won't be reached until the script is fetched and executed. However if enough document content has been already parsed, paint still happens.
         </figcaption>
@@ -414,8 +412,7 @@
 
     <details>
       <summary>HTML outline</summary>
-      <pre>
-&lt;head&gt;
+      <pre><code>&lt;head&gt;
   &lt;link rel="stylesheet" href="./assets/new.css" throttle="10"&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -425,42 +422,42 @@
   &lt;script&gt;
     performance.mark('script execution');
   &lt;/script&gt;
-&lt;/body&gt;</pre>
+&lt;/body&gt;</code></pre>
     </details>
 
     <details>
       <summary>Timeline</summary>
       <figure>
         <pre>
-       0.00 ┬ startTime
-      13.50 ├ requestStart
-      14.50 ├ responseStart
-      17.10 ├ responseEnd
-      21.50 ├ resourceStart: link("…mples/assets/new.css")
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-   10664.50 ├ resourceEnd: link("…mples/assets/new.css")
-   10790.70 ├ mark: script execution
-   10826.20 ├ domInteractive
-   10826.20 ├ domContentLoadedEventStart
-   10826.20 ├ domContentLoadedEventEnd
-   10842.20 ├ paint: first-paint
-   10842.20 ├ paint: first-contentful-paint
-   11041.90 ├ domComplete
-   11041.90 ├ loadEventStart
-   11042.00 └ loadEventEnd</pre>
+       0.00 <span style="opacity:.5">┬</span> startTime
+      20.00 <span style="opacity:.5">├</span> requestStart
+     170.80 <span style="opacity:.5">├</span> responseStart
+     177.70 <span style="opacity:.5">├</span> responseEnd
+     184.30 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+   10398.10 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+   10523.80 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution</span>
+   10581.60 <span style="opacity:.5">├</span> domInteractive
+   10581.60 <span style="opacity:.5">├</span> domContentLoadedEventStart
+   10581.60 <span style="opacity:.5">├</span> domContentLoadedEventEnd
+   10604.80 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-paint</span>
+   10604.80 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-contentful-paint</span>
+   10721.30 <span style="opacity:.5">├</span> domComplete
+   10721.50 <span style="opacity:.5">├</span> loadEventStart
+   10721.50 <span style="opacity:.5">└</span> loadEventEnd</pre>
         <figcaption>
           Timeline: The external style by itself would not block the document parsing, as seen <a href="#basic-html-style">previously</a>. However the script gets blocked by the style loading, and in turn the script blocks the document parsing. Thus DOM interactive is bounded by the style loading plus the script execution.
         </figcaption>
@@ -493,64 +490,63 @@
 
     <details>
       <summary>HTML outline</summary>
-      <pre>
-&lt;head&gt;
+      <pre><code>&lt;head&gt;
   &lt;link rel="stylesheet" href="./assets/new.css" throttle="10"&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;script src="./assets/junk.js#def1" defer throttle="5"&gt;&lt;/script&gt;
-  &lt;script src="./assets/junk.js#def2" defer throttle="2"&gt;&lt;/script&gt;
+  &lt;script src="./assets/junk.js?def1" defer throttle="5"&gt;&lt;/script&gt;
+
+  &lt;script src="./assets/junk.js?def2" defer throttle="2"&gt;&lt;/script&gt;
 
   &lt;!-- Long HTML contents --&gt;
 
-&lt;/body&gt;</pre>
+&lt;/body&gt;</code></pre>
     </details>
 
     <details>
       <summary>Timeline</summary>
       <figure>
         <pre>
-       0.00 ┬ startTime
-      14.40 ├ requestStart
-            ┊
-     380.50 ├ responseStart
-     383.60 ├ responseEnd
-     389.50 ├ resourceStart: link("…mples/assets/new.css")
-     389.90 ├ resourceStart: script("…mples/assets/junk.js#def1")
-     390.10 ├ resourceStart: script("…mples/assets/junk.js#def2")
-     399.80 ├ domInteractive
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-    2839.10 ├ resourceEnd: script("…mples/assets/junk.js#def2")
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-    5578.00 ├ resourceEnd: script("…mples/assets/junk.js#def1")
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-   10518.10 ├ resourceEnd: link("…mples/assets/new.css")
-   10566.40 ├ mark: script execution -- deferred 1
-   10566.70 ├ mark: script execution -- deferred 2
-   10566.80 ├ domContentLoadedEventStart
-   10566.80 ├ domContentLoadedEventEnd
-   10624.40 ├ paint: first-paint
-   10624.40 ├ paint: first-contentful-paint
-   10642.40 ├ domComplete
-   10642.50 ├ loadEventStart
-   10642.50 └ loadEventEnd</pre>
-        <figcaption>
+       0.00 <span style="opacity:.5">┬</span> startTime
+      19.90 <span style="opacity:.5">├</span> requestStart
+     168.20 <span style="opacity:.5">├</span> responseStart
+     174.00 <span style="opacity:.5">├</span> responseEnd
+     178.40 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+     178.60 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…/assets/junk.js?def1")</span>
+     178.90 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…/assets/junk.js?def2")</span>
+     183.70 <span style="opacity:.5">├</span> domInteractive
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    2385.70 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…/assets/junk.js?def2")</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    5457.80 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…/assets/junk.js?def1")</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+   10372.80 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+   10420.90 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- deferred 1</span>
+   10421.20 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- deferred 2</span>
+   10421.20 <span style="opacity:.5">├</span> domContentLoadedEventStart
+   10421.20 <span style="opacity:.5">├</span> domContentLoadedEventEnd
+   10500.00 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-paint</span>
+   10500.00 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-contentful-paint</span>
+   10514.20 <span style="opacity:.5">├</span> domComplete
+   10514.20 <span style="opacity:.5">├</span> loadEventStart
+   10514.20 <span style="opacity:.5">└</span> loadEventEnd</pre>
+       <figcaption>
           Timeline: It shows two deferred scripts that start to download as the document parses. The document parsing ends and It reaches the <em>interactive</em> state. The first deferred script takes 5s to download and the second takes 2s. They need to wait for the style download to end. Then both get executed in order. Finally <code>DOMContentLoaded</code> is fired. The rendering is hold by the style download, not the scripts. Without the external style, rendering would take place almost immediately.
         </figcaption>
     </figure>
@@ -580,73 +576,76 @@
 
     <details>
       <summary>HTML outline</summary>
-      <pre>
-&lt;head&gt;
+      <pre><code>&lt;head&gt;
   &lt;link rel="stylesheet" href="./assets/new.css" throttle="1"&gt;
 &lt;/head&gt;
 &lt;body&gt;
   &lt;script async src="./assets/junk.js#async1" throttle="5"&gt;&lt;/script&gt;
+
   &lt;script async src="./assets/fib.js#async2" throttle="0" data-fibonacci-number="42"&gt;&lt;/script&gt;
+
   &lt;script async src="./assets/junk.js#async3" throttle="1"&gt;&lt;/script&gt;
 
   &lt;!-- Long HTML contents --&gt;
 
-&lt;/body&gt;</pre>
+&lt;/body&gt;</code></pre>
     </details>
 
     <details>
       <summary>Timeline</summary>
       <figure>
         <pre>
-       0.00 ┬ startTime
-      18.40 ├ requestStart
-            ┊
-     363.10 ├ responseStart
-     454.70 ├ resourceStart: link("…mples/assets/new.css")
-     455.30 ├ resourceStart: script("…ssets/junk.js#async1")
-     455.70 ├ resourceStart: script("…assets/fib.js#async2")
-     455.80 ├ resourceStart: script("…ssets/junk.js#async3")
-            ┊
-     647.30 ├ resourceEnd: script("…assets/fib.js#async2")
-     649.30 ├ mark: script execution -- async 2
-     649.40 ├ mark: start fib(42)
-            ┊
-            ┊
-            ┊
-            ┊
-    1592.20 ├ resourceEnd: link("…mples/assets/new.css")
-    1592.60 ├ responseEnd
-    1629.00 ├ resourceEnd: script("…ssets/junk.js#async3")
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-    2834.70 ├ mark: end fib(42)
-    2842.30 ├ domInteractive
-    2842.30 ├ domContentLoadedEventStart
-    2842.30 ├ domContentLoadedEventEnd
-    2851.60 ├ mark: script execution -- async 3
-    2926.30 ├ paint: first-paint
-    2926.30 ├ paint: first-contentful-paint
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-    5893.70 ├ resourceEnd: script("…ssets/junk.js#async1")
-    5894.80 ├ mark: script execution -- async 1
-    5894.90 ├ domComplete
-    5894.90 ├ loadEventStart
-    5894.90 └ loadEventEnd</pre>
+       0.00 <span style="opacity:.5">┬</span> startTime
+      14.10 <span style="opacity:.5">├</span> requestStart
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+     612.50 <span style="opacity:.5">├</span> responseStart
+     623.90 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+     624.80 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…ssets/junk.js?async1")</span>
+     625.20 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…assets/fib.js?async2")</span>
+     625.40 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…ssets/junk.js?async3")</span>
+            <span style="opacity:.5">┊</span>
+     811.90 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…assets/fib.js?async2")</span>
+     814.30 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- async 2</span>
+     814.30 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">start fib(42)</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    1399.80 <span style="opacity:.5">├</span> responseEnd
+            <span style="opacity:.5">┊</span>
+    1680.70 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…ssets/junk.js?async3")</span>
+    1682.20 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    2955.60 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">end fib(42)</span>
+    2959.30 <span style="opacity:.5">├</span> domInteractive
+    2959.30 <span style="opacity:.5">├</span> domContentLoadedEventStart
+    2959.30 <span style="opacity:.5">├</span> domContentLoadedEventEnd
+    2967.30 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- async 3</span>
+            <span style="opacity:.5">┊</span>
+    3139.90 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-paint</span>
+    3139.90 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-contentful-paint</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    5835.90 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…ssets/junk.js?async1")</span>
+    5837.10 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- async 1</span>
+    5837.20 <span style="opacity:.5">├</span> domComplete
+    5837.30 <span style="opacity:.5">├</span> loadEventStart
+    5837.30 <span style="opacity:.5">└</span> loadEventEnd</pre>
         <figcaption>
           Timeline: It shows that four external resources start loading (one style, three async scripts) while the document is being received and parsed. The 2nd async script is the first to end its download. At this point none of the other external resources, nor the document itself have been completely received yet. Execution of this 2nd async script starts and takes a while &mdash; around 2seconds, a very looong task! While this script is executing, three other resources have finished arriving (the style, the document itself, and the 3rd async script). They can't be processed while the 2nd script is executing. When the execution of the 2nd script ends, we are unblocked to continue processing stuff. The style is processed. The rest of the document is parsed and reaches the interactive state. And the 3rd async script gets executed. Finally some rendering happens. Much later, the 1st async script ends its download and executes. Only then the <code>load</code> event fires.
         </figcaption>
@@ -659,13 +658,13 @@
   <hr>
 
   <article id="basic-html-script-dynamic">
-    <h2>📝 Dynamic scripts</h2>
+    <h2>📝 Dynamic scripts behave like async by default</h2>
 
-    <p>We consider dynamic scripts those that are created using JavaScript (and added to the DOM). This can be done at any time, there is no restriction.</p>
+    <p>We consider dynamic scripts those that are created &mdash;and added to the DOM&mdash; using JavaScript. This can be done at any time, there is no restriction.</p>
 
-    <p>There are two types of dynamic scripts: async (the default), or sync. There is no way to create a dynamic script that mimics the <code>defer</code> behaviour (makes no sense really).</p>
+    <p>There are two types of dynamic scripts: async (the default), or sync. There is no straight way to create a dynamic script that acts as <code>defer</code>.</p>
 
-    <p>They don't block document parsing, even if they are sync and are added before the document is <em>interactive</em>.</p>
+    <p>The insertion of a dynamic script does not block document parsing. Even if they are created in sync mode and are added before the document is <em>interactive</em> state.</p>
 
     <p>Dynamic sync scripts block each other. They execute in the order they were added to document (the insertion position is irrelevant).</p>
 
@@ -673,138 +672,142 @@
 
     <p>In fact any dynamic script may execute in the middle of critical processes like document parsing. It is important to keep your eyes open.</p>
 
-    <p>Finally, they do block the window <code>load</code> event. This is true for <em>every</em> dynamic script (async or sync), disregarding <strong>when they are added to the document</strong>. If they are added before <code>load</code> has fired, the event will be holded until the pending scripts execute.<p>
+    <p>Finally, they do block the window <code>load</code> event. This is true for <em>every</em> dynamic script (async or sync), disregarding when they are added to the document. If they are added before <code>load</code> has fired, the event will be holded until the pending scripts execute.<p>
 
     <p><a href="https://proxy-throttle.deno.dev/?factor=0.4&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-script-dynamic%2F" target="_blank"><button>Open example</button></a></p>
 
     <details>
       <summary>HTML outline</summary>
-      <pre>
-&lt;head&gt;
-  &lt;script async src="./assets/junk.js?async1" throttle="0"&gt;</script>
+      <pre><code>&lt;head&gt;
+  &lt;script async src="./assets/junk.js?async1" throttle="0"&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;script async src="./assets/junk.js?async2" throttle="9"&gt;</script>
+  &lt;script async src="./assets/junk.js?async2" throttle="9"&gt;&lt;/script&gt;
+
   &lt;script&gt;
     // mark: script execution -- inline 1
-    // Adds a dynamic script async "?dyn-async1" throttle=5
+    // Adds a dynamic async script "?dyn-async1" throttle=5
   &lt;/script&gt;
+
   &lt;script&gt;
     // mark: script execution -- inline 2
-    // Adds a dynamic script async "?dyn-async2" throttle=11
-    // onload of "?dyn-async2":
-    //   Adds a dynamic script async "?dyn-async3" throttle=3
+    // Adds a dynamic async script "?dyn-async2" throttle=11
+    //
+    // After "?dyn-async2" execution, domComplete would arrive
+    // We will add a extra dynamic async script "?dyn-async3" to
+    // demostrate that domComplete is holded by this last extra script
   &lt;/script&gt;
-  &lt;script defer src="./assets/junk.js?def1" throttle="6"&gt;</script>
+
+  &lt;script defer src="./assets/junk.js?def1" throttle="6"&gt;&lt;/script&gt;
+
   &lt;script&gt;
     // mark: script execution -- inline 3
-    // Adds a dynamic script sync "?dyn-sync1" throttle=7
+    // Adds a dynamic sync script "?dyn-sync1" throttle=7
   &lt;/script&gt;
-  &lt;script defer src="./assets/junk.js?def2" throttle="4"&gt;</script>
+
+  &lt;script defer src="./assets/junk.js?def2" throttle="4"&gt;&lt;/script&gt;
 
   &lt;!-- Long HTML contents --&gt;
 
   &lt;script&gt;
     // mark: script execution -- inline 4
-    // Adds a dynamic script sync "?dyn-sync2" throttle=2
+    // Adds a dynamic sync script "?dyn-sync2" throttle=2
   &lt;/script&gt;
-&lt;/body&gt;</pre>
+&lt;/body&gt;</code></pre>
     </details>
 
     <details>
       <summary>Timeline</summary>
       <figure>
         <pre>
-       0.00 ┬ startTime
-      51.60 ├ requestStart
-            ┊
-     311.70 ├ responseStart
-     452.80 ├ resourceStart: script("…ssets/junk.js?async1")
-     453.40 ├ resourceStart: script("…ssets/junk.js?async2")
-     453.90 ├ resourceStart: script("…/assets/junk.js?def1")
-     454.00 ├ resourceStart: script("…/assets/junk.js?def2")
-     456.50 ├ mark: script execution -- inline 1
-     457.50 ├ resourceStart: script("…/junk.js?dyn-async-1")
-     458.00 ├ mark: script execution -- inline 2
-     458.10 ├ resourceStart: script("…/junk.js?dyn-async-2")
-     458.60 ├ mark: script execution -- inline 3
-     458.70 ├ resourceStart: script("…s/junk.js?dyn-sync-1")
-     499.90 ├ paint: first-paint
-     499.90 ├ paint: first-contentful-paint
-     632.80 ├ resourceEnd: script("…ssets/junk.js?async1")
-     634.30 ├ mark: script execution -- async 1
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-    2859.50 ├ mark: script execution -- inline 4
-    2859.90 ├ resourceStart: script("…s/junk.js?dyn-sync-2")
-            ┊
-    3055.20 ├ responseEnd
-    3056.20 ├ domInteractive
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-    4919.20 ├ resourceEnd: script("…/assets/junk.js?def2")
-    4920.40 ├ resourceEnd: script("…s/junk.js?dyn-sync-2")
-            ┊
-            ┊
-            ┊
-    5841.00 ├ resourceEnd: script("…/junk.js?dyn-async-1")
-    5843.10 ├ mark: script execution -- dynamic async 1
-            ┊
-            ┊
-            ┊
-    6763.00 ├ resourceEnd: script("…/assets/junk.js?def1")
-    6764.70 ├ mark: script execution -- deferred 1
-    6765.00 ├ mark: script execution -- deferred 2
-    6765.00 ├ domContentLoadedEventStart
-    6765.10 ├ domContentLoadedEventEnd
-            ┊
-            ┊
-            ┊
-    7685.40 ├ resourceEnd: script("…s/junk.js?dyn-sync-1")
-    7687.20 ├ mark: script execution -- dynamic sync 1
-    7687.50 ├ mark: script execution -- dynamic sync 2
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-   10141.20 ├ resourceEnd: script("…ssets/junk.js?async2")
-   10143.00 ├ mark: script execution -- async 2
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-   11679.10 ├ resourceEnd: script("…/junk.js?dyn-async-2")
-   11680.90 ├ mark: script execution -- dynamic async 2
-   11681.60 ├ mark: callback execution -- onload dynamic async 2
-   11682.30 ├ resourceStart: script("…/junk.js?dyn-async-3")
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-            ┊
-   14720.70 ├ resourceEnd: script("…/junk.js?dyn-async-3")
-   14722.40 ├ mark: script execution -- dynamic async 3
-   14722.60 ├ domComplete
-   14722.70 ├ loadEventStart
-   14722.80 └ loadEventEnd</pre>
+       0.00 <span style="opacity:.5">┬</span> startTime
+      14.90 <span style="opacity:.5">├</span> requestStart
+            <span style="opacity:.5">┊</span>
+     423.10 <span style="opacity:.5">├</span> responseStart
+     433.80 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…ssets/junk.js?async1")</span>
+     434.30 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…ssets/junk.js?async2")</span>
+     434.70 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…/assets/junk.js?def1")</span>
+     434.80 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…/assets/junk.js?def2")</span>
+     442.00 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- inline 1</span>
+     443.00 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…/junk.js?dyn-async-1")</span>
+     443.60 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- inline 2</span>
+     443.80 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…/junk.js?dyn-async-2")</span>
+     444.60 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- inline 3</span>
+     444.70 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…s/junk.js?dyn-sync-1")</span>
+     482.40 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-paint</span>
+     482.40 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-contentful-paint</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    1041.90 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…ssets/junk.js?async1")</span>
+    1045.20 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- async 1</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    2886.10 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- inline 4</span>
+    2886.60 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…s/junk.js?dyn-sync-2")</span>
+    3004.30 <span style="opacity:.5">├</span> responseEnd
+    3004.90 <span style="opacity:.5">├</span> domInteractive
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    4723.90 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…/assets/junk.js?def2")</span>
+            <span style="opacity:.5">┊</span>
+    4921.80 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…s/junk.js?dyn-sync-2")</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    5646.10 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…/junk.js?dyn-async-1")</span>
+    5647.60 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- dynamic async 1</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    6618.30 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…/assets/junk.js?def1")</span>
+    6619.60 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- deferred 1</span>
+    6619.80 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- deferred 2</span>
+    6619.90 <span style="opacity:.5">├</span> domContentLoadedEventStart
+    6619.90 <span style="opacity:.5">├</span> domContentLoadedEventEnd
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    7796.70 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…s/junk.js?dyn-sync-1")</span>
+    7798.10 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- dynamic sync 1</span>
+    7798.20 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- dynamic sync 2</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    9640.20 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…ssets/junk.js?async2")</span>
+    9641.60 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- async 2</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+   11739.20 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…/junk.js?dyn-async-2")</span>
+   11740.30 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- dynamic async 2</span>
+   11740.50 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">callback execution -- onload dynamic async 2</span>
+   11741.00 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">script("…/junk.js?dyn-async-3")</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+   14862.00 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">script("…/junk.js?dyn-async-3")</span>
+   14863.70 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution -- dynamic async 3</span>
+   14863.70 <span style="opacity:.5">├</span> domComplete
+   14863.80 <span style="opacity:.5">├</span> loadEventStart
+   14863.80 <span style="opacity:.5">└</span> loadEventEnd</pre>
         <figcaption>
+          Timeline: Shows that all async scripts (initials or dynamically added) block nothing and get executed when they are ready. Deferred scripts hold the <code>DOMContentLoaded</code> event, and must wait other deferred scripts to be downloaded before executing. Dynamic sync scripts are executed in the order they where added to the document; in the example the dyn-sync-1 script takes a long time and holds the execution of dyn-sync-2. Finally domComplete won't happen until all pending scripts execute, disregarding how late they where added. In the example dyn-async-2 would have been the last resource, but we added a new script dyn-async-3 in its onload callback, thus posposing the <code>load</code> event.
         </figcaption>
     </figure>
     </details>
