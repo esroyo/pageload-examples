@@ -7,6 +7,8 @@
   <meta name="description" content="Learn how a web page loads by example">
   <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
   <link rel="stylesheet" href="./assets/new.css">
+  <link rel="preload" as="style" href="./assets/inter.css" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="./assets/inter.css"></noscript>
 	<script defer src="./assets/microlight.js"></script>
 </head>
 <body>
@@ -808,6 +810,111 @@
    14863.80 <span style="opacity:.5">└</span> loadEventEnd</pre>
         <figcaption>
           Timeline: Shows that all async scripts (initials or dynamically added) block nothing and get executed when they are ready. Deferred scripts hold the <code>DOMContentLoaded</code> event, and must wait other deferred scripts to be downloaded before executing. Dynamic sync scripts are executed in the order they where added to the document; in the example the dyn-sync-1 script takes a long time and holds the execution of dyn-sync-2. Finally domComplete won't happen until all pending scripts execute, disregarding how late they where added. In the example dyn-async-2 would have been the last resource, but we added a new script dyn-async-3 in its onload callback, thus posposing the <code>load</code> event.
+        </figcaption>
+    </figure>
+    </details>
+
+    <p>[<a href="#toc">TOP</a>]</p>
+  </article>
+
+  <hr>
+
+  <article id="basic-html-style-script-inline-async">
+    <h2>📝 It is possible to execute inline scripts without waiting for styles</h2>
+
+    <p>We have seen <a href="#basic-html-style-script">that inlined scripts can't execute until the ongoing styles loading ends</a>.</p>
+
+    <p>It is possible to overcome that limitation by mocking the inlined script as an external async script, using the <code>src</code> attribute to contain the code as a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs" target="_blank">data URL</a>. The downside is that the code must be URL encoded. It is not easy to manage.</p>
+
+    <p>Note that this method would not be useful if we use <code>defer</code>, given that deferred scripts also await for the ongoing styles to finish loading.</p>
+
+    <p><a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-inline-async/" target="_blank"><button>Open example</button></a></p>
+
+    <details>
+      <summary>HTML outline</summary>
+      <pre><code>&lt;head&gt;
+  &lt;link rel="stylesheet" href="./assets/new.css" throttle="10"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;script async src="data:application/javascript,&lt;YOUR_CODE_HERE&gt;"&gt;&lt;/script&gt;
+
+  &lt;!-- alternative as base64
+    &lt;script async src="data:application/javascript;base64,cGVyZm9ybWFuY2UubWFyaygnc2NyaXB0IGV4ZWN1dGlvbicp"&gt;&lt;/script&gt;
+  --&gt;
+
+  &lt;!-- Long HTML contents --&gt;
+
+&lt;/body&gt;</code></pre>
+    </details>
+
+    <details>
+      <summary>Timeline</summary>
+      <figure>
+        <pre>
+       0.00 <span style="opacity:.5">┬</span> startTime
+      14.70 <span style="opacity:.5">├</span> requestStart
+      18.00 <span style="opacity:.5">├</span> responseStart
+      22.10 <span style="opacity:.5">├</span> responseEnd
+      27.10 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+      34.10 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">script execution</span>
+      34.20 <span style="opacity:.5">├</span> domInteractive
+      34.20 <span style="opacity:.5">├</span> domContentLoadedEventStart
+      34.20 <span style="opacity:.5">├</span> domContentLoadedEventEnd
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+   10446.10 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+   10498.40 <span style="opacity:.5">├</span> domComplete
+   10498.50 <span style="opacity:.5">├</span> loadEventStart
+   10498.50 <span style="opacity:.5">├</span> loadEventEnd
+   10548.10 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-paint</span>
+   10548.10 <span style="opacity:.5">└</span> paint: <span style="opacity:.6">first-contentful-paint</span></pre>
+        <figcaption>
+          Timeline: An style starts to load very early. It blocks the <code>load</code> event, the rendering, and would block inline scripts too. The inline script of the example mocks an external async script behaviour, thus It can execute immediately without waiting for the style to load. Compare it with the <a href="#basic-html-style-script">regular inline script timeline</a>.</p>
+        </figcaption>
+    </figure>
+    </details>
+
+    <p>[<a href="#toc">TOP</a>]</p>
+  </article>
+
+  <hr>
+
+  <article id="basic-html-">
+    <h2>📝 Sit amet</h2>
+
+    <p>Lorem ipsum</p>
+
+    <p><a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-defer/" target="_blank"><button>Open example</button></a></p>
+
+    <details>
+      <summary>HTML outline</summary>
+      <pre><code>
+
+      </code></pre>
+    </details>
+
+    <details>
+      <summary>Timeline</summary>
+      <figure>
+        <pre>
+
+</pre>
+        <figcaption>
+          Timeline:
         </figcaption>
     </figure>
     </details>
