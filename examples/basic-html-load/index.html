@@ -6,11 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Learn how a web page loads by example">
   <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
-  <link rel="stylesheet" href="https://proxy-throttle.deno.dev?factor=1&url=https://esroyo.github.io/pageload-examples/assets/mashup-slow.css">
+  <link rel="stylesheet" href="https://esroyo.github.io/pageload-examples/assets/inter.css">
+  <link rel="stylesheet" href="https://proxy-throttle.deno.dev?factor=2&url=https://esroyo.github.io/pageload-examples/assets/new.css">
 </head>
 <body>
-
-  <script async src="https://proxy-throttle.deno.dev?factor=0&url=https://esroyo.github.io/pageload-examples/assets/fib.js?async" data-fibonacci-number="42" data-message=" -- async 1"></script>
 
   <header>
     <h1>🌍&nbsp; Page loading</h1>
@@ -138,13 +137,15 @@
 
     <p>Malesuada pellentesque elit eget gravida cum sociis natoque penatibus. Scelerisque in dictum non consectetur. Amet aliquam id diam maecenas ultricies mi. Sollicitudin nibh sit amet commodo. Ipsum a arcu cursus vitae congue mauris rhoncus. Viverra aliquet eget sit amet tellus cras adipiscing. Viverra accumsan in nisl nisi scelerisque eu ultrices vitae auctor. Vestibulum lectus mauris ultrices eros in cursus turpis massa tincidunt. Et magnis dis parturient montes nascetur ridiculus mus. Massa massa ultricies mi quis hendrerit dolor. Pharetra magna ac placerat vestibulum lectus. Sit amet aliquam id diam maecenas. Euismod quis viverra nibh cras pulvinar mattis nunc sed blandit. Lobortis feugiat vivamus at augue eget arcu dictum. Vitae et leo duis ut diam. Adipiscing elit ut aliquam purus sit amet.</p>
 
-  <img loading="lazy" src="https://proxy-throttle.deno.dev?factor=10&url=https://esroyo.github.io/pageload-examples/assets/www-letshare.png?lazy" id="img2" width="536" height="448" style="float:right" alt="WWW">
+  <img loading="lazy" src="../../assets/www-letshare.png?lazy" id="img2" width="536" height="448" style="float:right" alt="WWW">
 
     <p>Nulla facilisi morbi tempus iaculis urna id volutpat lacus. Aliquam purus sit amet luctus venenatis lectus magna fringilla urna. Id consectetur purus ut faucibus pulvinar elementum integer enim neque. Turpis cursus in hac habitasse platea dictumst quisque sagittis purus. Semper eget duis at tellus at urna condimentum mattis pellentesque. Interdum velit laoreet id donec. Sollicitudin nibh sit amet commodo nulla facilisi. In nulla posuere sollicitudin aliquam ultrices sagittis orci. Purus ut faucibus pulvinar elementum integer enim neque. Sed arcu non odio euismod. Facilisis mauris sit amet massa vitae tortor condimentum lacinia. Donec et odio pellentesque diam volutpat commodo. Pellentesque sit amet porttitor eget dolor morbi non. In est ante in nibh mauris cursus.</p>
 
   </article>
 
-  <iframe src="../../index.html" width="640" height="480" title="Pageload examples"></iframe>
+  <iframe src="../basic-html-style/index.html" width="640" height="480" title="Pageload examples" onload="performance.mark('iframe loaded')"></iframe>
+
+  <iframe loading="lazy" src="../../index.html" width="640" height="480" title="Pageload examples"></iframe>
 
 </body>
 </html>
