@@ -120,6 +120,8 @@
 
     <p>While there are pending styles to download and parse, the window `load` will not fire. No matter how late they have been added to the DOM.</p>
 
+    <p>Syles imported with <code>@import</code> statements from the external styles are considered part of the same loading process.</p>
+
     <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style/" target="_blank"><button>Open example</button></a>
     </p>
@@ -407,6 +409,8 @@
     <p>Note we emphasize the fact that only <em>ongoing</em> loading styles will block the script. If the order is inverted and the script is placed before the style, It will get executed immediately. See that in <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-script-style/" target="_blank">this secondary example</a> (timeline will be similar to the <a href="#basic-html-style">second case</a>).</p>
 
     <p><strong>This rule only applies to <em>initial</em> styles</strong>. That is to stylesheet links that are in the initial HTML response. Stylesheet links added dynamically do not block successive scripts, even if they are added to the document before those scripts.</p>
+
+    <p>When the initial stylesheets contain <code>@import</code> statements, those are considered part of the same style loading. Thus importing styles from styles is a serious concern, as it pospones script execution and rendering. Check that in <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-style-script/" target="_blank">this other secondary example</a>.</p>
 
     <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script/" target="_blank"><button>Open example</button></a>
