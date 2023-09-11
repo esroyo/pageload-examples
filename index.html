@@ -49,7 +49,6 @@
     <p>Let's demonstrate that fact by loading a page with lots of text content. Page download is throttled by the server and takes a long time.</p>
     <p>Try to scroll down while the page is being downloaded.</p>
     <p>The display keeps updating, but <code>DOMContentLoaded</code> event won't trigger until the download and parsing of the HTML is <em>completed</em>.</p>
-    <p>There is no <em>direct</em> correlation between the delay on those events and a poor core web vitals score. Although the page is loading, LCP will happen soon enough. This doesn't mean the "performance" of the page is good.</p>
 
     <p>
     <a href="https://proxy-throttle.deno.dev/?factor=5&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html%2F" target="_blank"><button>Open example</button></a>
@@ -935,6 +934,9 @@
 
   -->
 
+<footer>
+  <p>View this project on <a href="https://github.com/esroyo/pageload-examples">GitHub</a>.</p>
+</footer>
+
 </body>
 </html>
-
