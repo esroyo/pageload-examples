@@ -204,7 +204,7 @@
     <p>
     <a href="https://proxy-throttle.deno.dev/?factor=5&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-inline%2F" target="_blank"><button>Open example</button></a>
     &nbsp;&#x2611;
-    <a href=" " target="_blank">Webpage test result</a>
+    <a href="https://www.webpagetest.org/result/230911_AiDcPN_AVE/2/details/" target="_blank">Webpage test result</a>
     </p>
 
     <details>
@@ -277,6 +277,8 @@
 
     <p>
     <a href="https://proxy-throttle.deno.dev/?factor=2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-critical%2F" target="_blank"><button>Open example</button></a>
+    &nbsp;&#x2611;
+    <a href="https://www.webpagetest.org/result/230911_AiDc4T_ATZ/3/details/" target="_blank">Webpage test result</a>
     </p>
 
     <details>
@@ -346,6 +348,8 @@
 
     <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-script/" target="_blank"><button>Open example</button></a>
+    &nbsp;&#x2611;
+    <a href="https://www.webpagetest.org/result/230911_BiDcEF_AX4/3/details/" target="_blank">Webpage test result</a>
     </p>
 
     <details>
@@ -422,6 +426,8 @@
 
     <p>
     <a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script/" target="_blank"><button>Open example</button></a>
+    &nbsp;&#x2611;
+    <a href="https://www.webpagetest.org/result/230911_AiDc2R_AWX/2/details/" target="_blank">Webpage test result</a>
     </p>
 
     <details>
@@ -502,7 +508,10 @@
 
     <p>As a side note, scripts of <code>type=module</code> behave like deferred scripts. They keep order, execute once the document is interative, wait for styles, etc. The most notable difference is that they probably get higher download priority. Also they won't have access to <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/currentScript" target="_blank">document.currentScript</a>.</p>
 
-    <p><a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-defer/" target="_blank"><button>Open example</button></a></p>
+    <p><a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-defer/" target="_blank"><button>Open example</button></a>
+    &nbsp;&#x2611;
+    <a href="https://www.webpagetest.org/result/230911_BiDcWN_AZP/1/details/" target="_blank">Webpage test result</a>
+    </p>
 
     <details>
       <summary>HTML outline</summary>
@@ -588,7 +597,10 @@
       </ul>
     </p>
 
-    <p><a href="https://proxy-throttle.deno.dev/?factor=0.2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-script-async%2F" target="_blank"><button>Open example</button></a></p>
+    <p><a href="https://proxy-throttle.deno.dev/?factor=0.2&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-style-script-async%2F" target="_blank"><button>Open example</button></a>
+    &nbsp;&#x2611;
+    <a href="https://www.webpagetest.org/result/230911_AiDcMS_AZF/1/details/" target="_blank">Webpage test result</a>
+    </p>
 
     <details>
       <summary>HTML outline</summary>
@@ -691,6 +703,9 @@
     <p>Finally, they do block the window <code>load</code> event. This is true for <em>every</em> dynamic script (async or sync), disregarding when they are added to the document. If they are added before <code>load</code> has fired, the event will be holded until the pending scripts execute.<p>
 
     <p><a href="https://proxy-throttle.deno.dev/?factor=0.4&url=https%3A%2F%2Fesroyo.github.io%2Fpageload-examples%2Fexamples%2Fbasic-html-script-dynamic%2F" target="_blank"><button>Open example</button></a></p>
+    &nbsp;&#x2611;
+    <a href="https://www.webpagetest.org/result/230911_AiDc7V_B01/2/details/" target="_blank">Webpage test result</a>
+    </p>
 
     <details>
       <summary>HTML outline</summary>
@@ -842,7 +857,10 @@
 
     <p>Note that this method would not be useful if we use <code>defer</code>, given that deferred scripts also await for the ongoing styles to finish loading.</p>
 
-    <p><a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-inline-async/" target="_blank"><button>Open example</button></a></p>
+    <p><a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-inline-async/" target="_blank"><button>Open example</button></a>
+    &nbsp;&#x2611;
+    <a href="https://www.webpagetest.org/result/230911_AiDcE1_B12/3/details/" target="_blank">Webpage test result</a>
+    </p>
 
     <details>
       <summary>HTML outline</summary>
@@ -905,6 +923,104 @@
     <p>[<a href="#toc">TOP</a>]</p>
   </article>
 
+  <hr>
+
+  <article id="basic-html-">
+    <h2>📝 The "load" event fires once all resources in turn have fired "load"</h2>
+
+    <p>Most of the resources like scripts (any kind), styles, images, iframes, etc. have a <code>load</code> event (usually alternative exclusive to the <code>error</code> event).</p>
+
+    <p>When all the resources of the page <em>currently loading</em> have fired <code>load</code>, then the load event will take place.</p>
+
+    <p>Resources that are declared lazy (images or iframes) and have not started loading won't count.</p>
+
+    <p><a href="https://esroyo.github.io/pageload-examples/examples/basic-html-load/" target="_blank"><button>Open example</button></a>
+    &nbsp;&#x2611;
+    <a href="https://www.webpagetest.org/result/230911_BiDc6S_B80/1/details/" target="_blank">Webpage test result</a>
+    </p>
+
+    <details>
+      <summary>HTML outline</summary>
+      <pre><code>&lt;head&gt;
+  &lt;link rel="stylesheet" href="./assets/inter.css"&gt;
+  &lt;link rel="stylesheet" href="./assets/new.css" throttle="2"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;img src="./assets/www-letshare.png" /&gt;
+  
+  &lt;!-- Long HTML contents --&gt;
+
+  &lt;img loading="lazy" src="./assets/www-letshare.png?lazy" /&gt;
+
+  &lt;iframe src="./basic-html-style/index.html" onload="performance.mark('iframe loaded')"&gt;&lt;/iframe&gt;
+
+  &lt;iframe loading="lazy" src="../index.html?lazy"&gt;&lt;/iframe&gt;
+
+&lt;/body&gt;</code></pre>
+    </details>
+
+    <details>
+      <summary>Timeline</summary>
+      <figure>
+        <pre>
+       0.00 <span style="opacity:.5">┬</span> startTime
+       5.70 <span style="opacity:.5">├</span> requestStart
+      37.40 <span style="opacity:.5">├</span> responseStart
+      42.60 <span style="opacity:.5">├</span> responseEnd
+      48.30 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">link("…les/assets/inter.css")</span>
+      48.60 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+      48.80 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">img("…ets/www-letshare.png")</span>
+      54.50 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">iframe("…tml-style/index.html")</span>
+      56.00 <span style="opacity:.5">├</span> domInteractive
+      56.00 <span style="opacity:.5">├</span> domContentLoadedEventStart
+      56.10 <span style="opacity:.5">├</span> domContentLoadedEventEnd
+     147.40 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">link("…les/assets/inter.css")</span>
+     148.70 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">iframe("…tml-style/index.html")</span>
+     151.10 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">img("…ets/www-letshare.png")</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+    2234.40 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">link("…mples/assets/new.css")</span>
+    2237.10 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">css("…ter/Inter-Bold.woff2")</span>
+    2237.50 <span style="opacity:.5">├</span> resourceStart: <span style="opacity:.6">css("…/Inter-Regular.woff2")</span>
+    2273.70 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-paint</span>
+    2273.70 <span style="opacity:.5">├</span> paint: <span style="opacity:.6">first-contentful-paint</span>
+    2316.90 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">css("…ter/Inter-Bold.woff2")</span>
+    2323.10 <span style="opacity:.5">├</span> resourceEnd: <span style="opacity:.6">css("…/Inter-Regular.woff2")</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+            <span style="opacity:.5">┊</span>
+   10200.60 <span style="opacity:.5">├</span> mark: <span style="opacity:.6">iframe loaded</span>
+   10222.90 <span style="opacity:.5">├</span> domComplete
+   10223.00 <span style="opacity:.5">├</span> loadEventStart
+   10223.00 <span style="opacity:.5">└</span> loadEventEnd</pre>
+        <figcaption>
+          Timeline:
+        </figcaption>
+    </figure>
+    </details>
+
+    <p>[<a href="#toc">TOP</a>]</p>
+  </article>
+
 <!-- template 
 
   <hr>
@@ -914,7 +1030,10 @@
 
     <p>Lorem ipsum</p>
 
-    <p><a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-defer/" target="_blank"><button>Open example</button></a></p>
+    <p><a href="https://esroyo.github.io/pageload-examples/examples/basic-html-style-script-defer/" target="_blank"><button>Open example</button></a>
+    &nbsp;&#x2611;
+    <a href=" " target="_blank">Webpage test result</a>
+    </p>
 
     <details>
       <summary>HTML outline</summary>
