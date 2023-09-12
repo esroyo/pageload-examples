@@ -29,6 +29,7 @@
       <li><a href="#basic-html-style-script-async">Async scripts block (almost) nothing</a></li>
       <li><a href="#basic-html-script-dynamic">Dynamic scripts behave like async by default</a></li>
       <li><a href="#basic-html-style-script-inline-async">Execute inline scripts without waiting for styles</a></li>
+      <li><a href="#basic-html-load">The "load" event fires once all resources in turn have fired "load"</a></li>
     </ul>
   </details>  
 
@@ -925,7 +926,7 @@
 
   <hr>
 
-  <article id="basic-html-">
+  <article id="basic-html-load">
     <h2>📝 The "load" event fires once all resources in turn have fired "load"</h2>
 
     <p>Most of the resources like scripts (any kind), styles, images, iframes, etc. have a <code>load</code> event (usually alternative exclusive to the <code>error</code> event).</p>
